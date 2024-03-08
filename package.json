@@ -1,6 +1,6 @@
 {
   "name": "onlybags-ecommerce-sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple tool to use onlybags ecommerce.",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
