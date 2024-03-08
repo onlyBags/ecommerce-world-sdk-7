@@ -1,0 +1,37 @@
+{
+  "name": "onlybags-ecommerce-sdk",
+  "version": "0.0.1",
+  "description": "A simple tool to use onlybags ecommerce.",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "tsc -p tsconfig.json -watch"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "keywords": [
+    "decentraland",
+    "onlybags",
+    "ecommerce",
+    "sdk7",
+    "sdk 7",
+    "sdk utils",
+    "sdk library"
+  ],
+  "author": "maikinahara[at]gmail",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@dcl-sdk/utils": "latest",
+    "@dcl/sdk": "latest",
+    "typescript": "^5.0.2"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@dcl/js-runtime": "^7.4.3",
+    "decentraland-ecs": "^6.12.3"
+  }
+}
