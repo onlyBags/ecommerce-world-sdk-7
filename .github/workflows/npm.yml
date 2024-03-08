@@ -20,7 +20,7 @@ jobs:
       - name: Install
         run: npm ci
       - name: Build
-        run: npm run build && cp -r bin dist
+        run: npm run build
       - name: Publish
         uses: menduz/oddish-action@2.0.1
         with:
