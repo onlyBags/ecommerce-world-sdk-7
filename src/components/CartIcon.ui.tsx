@@ -1,5 +1,6 @@
 import ReactEcs, { Label, UiEntity } from "@dcl/sdk/react-ecs";
 import { LineItem } from "../types";
+import { images } from "../assets/images";
 interface CartIconProps {
   lineItems: LineItem[];
   closeModal: () => void;
@@ -33,7 +34,7 @@ export const CartIcon = ({
         uiBackground={{
           textureMode: "nine-slices",
           texture: {
-            src: "../images/1.png",
+            src: images.cartIcon,
           },
           textureSlices: {
             top: 0.5,

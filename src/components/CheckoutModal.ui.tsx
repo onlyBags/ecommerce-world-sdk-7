@@ -1,89 +1,99 @@
-import { Color4 } from '@dcl/sdk/math'
-import ReactEcs, { UiEntity } from '@dcl/sdk/react-ecs'
-import { MODAL_SIZE, postOrder } from '../utils'
-import { PlaceOrderDetails } from '../types'
-import { executeTask } from '@dcl/sdk/ecs'
+import { Color4 } from "@dcl/sdk/math";
+import ReactEcs, { UiEntity } from "@dcl/sdk/react-ecs";
+import { MODAL_SIZE, postOrder } from "../utils";
+import { PlaceOrderDetails } from "../types";
+import { executeTask } from "@dcl/sdk/ecs";
+import { images } from "../assets/images";
 
 interface CheckoutModalProps {
-  placeOrderDetails: PlaceOrderDetails
-  closeModal: () => void
+  placeOrderDetails: PlaceOrderDetails;
+  closeModal: () => void;
 }
 
 function selectOption(index: number) {
-  console.log(index)
+  console.log(index);
 }
 
 enum PaymentMethod {
-  Ice = 'Ice',
-  Coinbase = 'Coinbase',
-  Binance = 'Binance',
-  CreditCard = 'CreditCard'
+  Ice = "Ice",
+  Coinbase = "Coinbase",
+  Binance = "Binance",
+  CreditCard = "CreditCard",
 }
-let selectedPayment: PaymentMethod
-let isPaying: boolean = false
-let hasSelectedPayment: boolean = true
+let selectedPayment: PaymentMethod;
+let isPaying: boolean = false;
+let hasSelectedPayment: boolean = true;
 
-export const CheckoutModal = ({ placeOrderDetails, closeModal }: CheckoutModalProps) => {
+export const CheckoutModal = ({
+  placeOrderDetails,
+  closeModal,
+}: CheckoutModalProps) => {
   const handlePayment = (paymentMethod: PaymentMethod) => {
-    selectedPayment = paymentMethod
+    selectedPayment = paymentMethod;
     if (!selectedPayment) {
-      hasSelectedPayment = false
-      return
+      hasSelectedPayment = false;
+      return;
     }
-    placeOrderDetails.paymentMethod = paymentMethod
+    placeOrderDetails.paymentMethod = paymentMethod;
 
     executeTask(async () => {
       try {
-        isPaying = true
-        hasSelectedPayment = true
-        const res = await postOrder(placeOrderDetails)
-        console.log(res)
+        isPaying = true;
+        hasSelectedPayment = true;
+        const res = await postOrder(placeOrderDetails);
+        console.log(res);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
-        isPaying = false
+        isPaying = false;
       }
-    })
-  }
+    });
+  };
 
   return (
     <UiEntity
       uiTransform={{
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        display: 'flex'
+        width: "100%",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        display: "flex",
       }}
     >
       <UiEntity
         uiTransform={{
           width: MODAL_SIZE.width,
           height: MODAL_SIZE.height,
-          display: 'flex',
-          justifyContent: 'space-between'
+          display: "flex",
+          justifyContent: "space-between",
         }}
       >
         <UiEntity
           uiTransform={{
             width: 419,
             height: 580,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
-          uiBackground={{ color: Color4.lerp(Color4.fromHexString('#D0C0B3'), Color4.fromHexString('#E3DFDC'), 0.7) }}
+          uiBackground={{
+            color: Color4.lerp(
+              Color4.fromHexString("#D0C0B3"),
+              Color4.fromHexString("#E3DFDC"),
+              0.7
+            ),
+          }}
         >
           <UiEntity
             uiTransform={{
               width: 386,
-              height: 402
+              height: 402,
             }}
             uiBackground={{
-              textureMode: 'center',
+              textureMode: "center",
               texture: {
-                src: 'images/payments/Payment.png'
-              }
+                src: images.payments.payment,
+              },
             }}
           />
         </UiEntity>
@@ -91,124 +101,138 @@ export const CheckoutModal = ({ placeOrderDetails, closeModal }: CheckoutModalPr
           uiTransform={{
             width: 530,
             height: 580,
-            display: 'flex',
-            flexDirection: 'column'
+            display: "flex",
+            flexDirection: "column",
           }}
-          uiBackground={{ color: Color4.fromHexString('#E5E5E5') }}
+          uiBackground={{ color: Color4.fromHexString("#E5E5E5") }}
         >
           <UiEntity
             uiTransform={{
-              justifyContent: 'center',
-              margin: { top: 35 }
+              justifyContent: "center",
+              margin: { top: 35 },
             }}
           >
             <UiEntity
               uiTransform={{
                 width: 425,
                 height: 53,
-                justifyContent: 'center'
+                justifyContent: "center",
               }}
               uiBackground={{
-                textureMode: 'center',
+                textureMode: "center",
                 texture: {
-                  src: 'images/payments/Final-Step.png'
-                }
+                  src: images.steps.finalStep,
+                },
               }}
             />
           </UiEntity>
           <UiEntity
             uiTransform={{ margin: { top: 25, left: 20 } }}
             uiText={{
-              value: 'Select Payment Method',
+              value: "Select Payment Method",
               fontSize: 24,
-              textAlign: 'top-left',
-              color: Color4.fromHexString('#121417')
+              textAlign: "top-left",
+              color: Color4.fromHexString("#121417"),
             }}
           />
           <UiEntity
             uiTransform={{
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              padding: { left: 10, right: 10 }
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              padding: { left: 10, right: 10 },
             }}
           >
-            <UiEntity uiTransform={{ width: '100%', height: '30%' }}>
+            <UiEntity uiTransform={{ width: "100%", height: "30%" }}>
               <UiEntity
                 uiBackground={{
-                  color: selectedPayment === PaymentMethod.Ice ? Color4.Black() : Color4.fromHexString('#E5E5E5')
+                  color:
+                    selectedPayment === PaymentMethod.Ice
+                      ? Color4.Black()
+                      : Color4.fromHexString("#E5E5E5"),
                 }}
                 uiTransform={{ width: 250 }}
               >
                 <UiEntity
                   uiTransform={{
-                    width: 300
+                    width: 300,
                   }}
                   uiBackground={{
-                    textureMode: 'center',
+                    textureMode: "center",
                     texture: {
-                      src: 'images/payments/Ice2.png'
-                    }
+                      src: images.payments.bag,
+                    },
                   }}
                   onMouseDown={() => (selectedPayment = PaymentMethod.Ice)}
                 />
               </UiEntity>
               <UiEntity
                 uiBackground={{
-                  color: selectedPayment === PaymentMethod.Coinbase ? Color4.Black() : Color4.fromHexString('#E5E5E5')
+                  color:
+                    selectedPayment === PaymentMethod.Coinbase
+                      ? Color4.Black()
+                      : Color4.fromHexString("#E5E5E5"),
                 }}
                 uiTransform={{ width: 250 }}
               >
                 <UiEntity
                   uiTransform={{
-                    width: 300
+                    width: 300,
                   }}
                   uiBackground={{
-                    textureMode: 'center',
+                    textureMode: "center",
                     texture: {
-                      src: 'images/payments/Coinbase2.png'
-                    }
+                      src: images.payments.coinbase,
+                    },
                   }}
                   onMouseDown={() => (selectedPayment = PaymentMethod.Coinbase)}
                 />
               </UiEntity>
               <UiEntity
                 uiBackground={{
-                  color: selectedPayment === PaymentMethod.Binance ? Color4.Black() : Color4.fromHexString('#E5E5E5')
+                  color:
+                    selectedPayment === PaymentMethod.Binance
+                      ? Color4.Black()
+                      : Color4.fromHexString("#E5E5E5"),
                 }}
                 uiTransform={{ width: 250 }}
               >
                 <UiEntity
                   uiTransform={{
-                    width: 300
+                    width: 300,
                   }}
                   uiBackground={{
-                    textureMode: 'center',
+                    textureMode: "center",
                     texture: {
-                      src: 'images/payments/Binance2.png'
-                    }
+                      src: images.payments.binance,
+                    },
                   }}
                   onMouseDown={() => (selectedPayment = PaymentMethod.Binance)}
                 />
               </UiEntity>
               <UiEntity
                 uiBackground={{
-                  color: selectedPayment === PaymentMethod.CreditCard ? Color4.Black() : Color4.fromHexString('#E5E5E5')
+                  color:
+                    selectedPayment === PaymentMethod.CreditCard
+                      ? Color4.Black()
+                      : Color4.fromHexString("#E5E5E5"),
                 }}
                 uiTransform={{ width: 250 }}
               >
                 <UiEntity
                   uiTransform={{
-                    width: 300
+                    width: 300,
                   }}
                   uiBackground={{
-                    textureMode: 'center',
+                    textureMode: "center",
                     texture: {
-                      src: 'images/payments/Credit-Card.png'
-                    }
+                      src: images.payments.creditCard,
+                    },
                   }}
-                  onMouseDown={() => (selectedPayment = PaymentMethod.CreditCard)}
+                  onMouseDown={() =>
+                    (selectedPayment = PaymentMethod.CreditCard)
+                  }
                 />
               </UiEntity>
             </UiEntity>
@@ -216,10 +240,10 @@ export const CheckoutModal = ({ placeOrderDetails, closeModal }: CheckoutModalPr
               <UiEntity
                 uiTransform={{ margin: { top: 25, left: 20 } }}
                 uiText={{
-                  value: 'You have to select a payment method',
+                  value: "You have to select a payment method",
                   fontSize: 20,
-                  textAlign: 'top-left',
-                  color: Color4.Red()
+                  textAlign: "top-left",
+                  color: Color4.Red(),
                 }}
               />
             )}
@@ -228,41 +252,46 @@ export const CheckoutModal = ({ placeOrderDetails, closeModal }: CheckoutModalPr
             uiTransform={{
               width: 530,
               height: 90,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
             uiBackground={{ color: Color4.White() }}
           >
             <UiEntity
               uiTransform={{ width: 300, height: 100 }}
               uiText={{
-                value: 'Cancel',
+                value: "Cancel",
                 fontSize: 24,
-                color: Color4.fromHexString('#6F6C90')
+                color: Color4.fromHexString("#6F6C90"),
               }}
               onMouseDown={closeModal}
             />
             <UiEntity
               uiTransform={{
                 width: 20,
-                height: 140
+                height: 140,
               }}
               uiBackground={{
-                textureMode: 'center',
+                textureMode: "center",
                 texture: {
-                  src: 'images/payments/Line.png'
-                }
+                  src: images.payments.line,
+                },
               }}
             />
             <UiEntity
               uiTransform={{ width: 300, height: 100 }}
               uiText={{
-                value: 'Place Order',
+                value: "Place Order",
                 fontSize: 24,
-                color: !isPaying && selectedPayment ? Color4.fromHexString('#FF2E55') : Color4.Gray()
+                color:
+                  !isPaying && selectedPayment
+                    ? Color4.fromHexString("#FF2E55")
+                    : Color4.Gray(),
               }}
-              onMouseDown={isPaying ? () => {} : () => handlePayment(selectedPayment)}
+              onMouseDown={
+                isPaying ? () => {} : () => handlePayment(selectedPayment)
+              }
             />
           </UiEntity>
         </UiEntity>
@@ -270,24 +299,24 @@ export const CheckoutModal = ({ placeOrderDetails, closeModal }: CheckoutModalPr
           uiTransform={{
             width: 45,
             height: 45,
-            positionType: 'absolute',
-            position: { left: '925px', top: '-20px' }
+            positionType: "absolute",
+            position: { left: "925px", top: "-20px" },
           }}
           uiBackground={{
-            textureMode: 'nine-slices',
+            textureMode: "nine-slices",
             texture: {
-              src: 'images/Close.png'
+              src: images.closeIcon,
             },
             textureSlices: {
               top: 1,
               bottom: 1,
               left: 1,
-              right: 1
-            }
+              right: 1,
+            },
           }}
           onMouseDown={closeModal}
         />
       </UiEntity>
     </UiEntity>
-  )
-}
+  );
+};

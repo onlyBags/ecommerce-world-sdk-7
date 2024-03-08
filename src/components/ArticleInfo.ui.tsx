@@ -14,6 +14,7 @@ import {
 } from "../utils";
 import ModalClose from "./ModalClose.ui";
 import config from "../config";
+import { images } from "../assets/images";
 const { baseUrl, maxItemQuantity } = config;
 
 interface ArticleInfoProps {
@@ -433,7 +434,7 @@ export const ArticleInfo = ({
               uiBackground={{
                 textureMode: "center",
                 texture: {
-                  src: "images/payments/Line.png",
+                  src: images.payments.line,
                 },
               }}
               uiTransform={{ width: "20%", height: "100%" }}
@@ -453,7 +454,7 @@ export const ArticleInfo = ({
                 uiBackground={{
                   textureMode: "center",
                   texture: {
-                    src: "images/article/Plus-Icon.png",
+                    src: images.article.plusIcon,
                   },
                 }}
               />
