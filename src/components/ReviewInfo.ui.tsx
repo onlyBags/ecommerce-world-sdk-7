@@ -91,7 +91,42 @@ const shippingFields: {
     label: "Country",
   },
 ];
+const getBillingFields = (placeOrderDetails: PlaceOrderDetails) => {
+  return (
+    <UiEntity>
+      {billingFields.map((field) => {
+        return (
+          <UiEntity
+            uiTransform={{
+              ...CONTAINER_BASE_PROPS,
+              width: 220,
+            }}
+            key={field.key}
+          >
+            <Label
+              value={field.label}
+              fontSize={LABEL_FONT_SIZE}
+              textAlign="top-left"
+              color={Color4.Black()}
+              uiTransform={LABEL_TRANSFORM}
+            />
 
+            <Input
+              value={placeOrderDetails.billing[field.key]}
+              onChange={(e: string) => {
+                placeOrderDetails.billing[field.key] = e;
+              }}
+              uiTransform={INPUT_TRANSFORM}
+              fontSize={INPUT_FONT_SIZE}
+              color={Color4.Black()}
+              disabled={true}
+            />
+          </UiEntity>
+        );
+      })}
+    </UiEntity>
+  );
+};
 export const ReviewInfo = ({
   goBackToBilling,
   placeOrderDetails,
@@ -158,36 +193,40 @@ export const ReviewInfo = ({
                 }}
               />
               <ModalFormContainer
-                children={shippingFields.map((field) => {
-                  return (
-                    <UiEntity
-                      uiTransform={{
-                        ...CONTAINER_BASE_PROPS,
-                        width: 220,
-                      }}
-                      key={field.key}
-                    >
-                      <Label
-                        value={field.label}
-                        fontSize={LABEL_FONT_SIZE}
-                        textAlign="top-left"
-                        color={Color4.Black()}
-                        uiTransform={LABEL_TRANSFORM}
-                      />
+                children={
+                  <UiEntity>
+                    {shippingFields.map((field) => {
+                      return (
+                        <UiEntity
+                          uiTransform={{
+                            ...CONTAINER_BASE_PROPS,
+                            width: 220,
+                          }}
+                          key={field.key}
+                        >
+                          <Label
+                            value={field.label}
+                            fontSize={LABEL_FONT_SIZE}
+                            textAlign="top-left"
+                            color={Color4.Black()}
+                            uiTransform={LABEL_TRANSFORM}
+                          />
 
-                      <Input
-                        value={placeOrderDetails.shipping[field.key]}
-                        onChange={(e: string) => {
-                          placeOrderDetails.shipping[field.key] = e;
-                        }}
-                        uiTransform={INPUT_TRANSFORM}
-                        fontSize={INPUT_FONT_SIZE}
-                        color={Color4.Black()}
-                        disabled={true}
-                      />
-                    </UiEntity>
-                  );
-                })}
+                          <Input
+                            value={placeOrderDetails.shipping[field.key]}
+                            onChange={(e: string) => {
+                              placeOrderDetails.shipping[field.key] = e;
+                            }}
+                            uiTransform={INPUT_TRANSFORM}
+                            fontSize={INPUT_FONT_SIZE}
+                            color={Color4.Black()}
+                            disabled={true}
+                          />
+                        </UiEntity>
+                      );
+                    })}
+                  </UiEntity>
+                }
               />
             </UiEntity>
             <UiEntity
@@ -214,36 +253,7 @@ export const ReviewInfo = ({
                 }}
               />
               <ModalFormContainer
-                children={billingFields.map((field) => {
-                  return (
-                    <UiEntity
-                      uiTransform={{
-                        ...CONTAINER_BASE_PROPS,
-                        width: 220,
-                      }}
-                      key={field.key}
-                    >
-                      <Label
-                        value={field.label}
-                        fontSize={LABEL_FONT_SIZE}
-                        textAlign="top-left"
-                        color={Color4.Black()}
-                        uiTransform={LABEL_TRANSFORM}
-                      />
-
-                      <Input
-                        value={placeOrderDetails.billing[field.key]}
-                        onChange={(e: string) => {
-                          placeOrderDetails.billing[field.key] = e;
-                        }}
-                        uiTransform={INPUT_TRANSFORM}
-                        fontSize={INPUT_FONT_SIZE}
-                        color={Color4.Black()}
-                        disabled={true}
-                      />
-                    </UiEntity>
-                  );
-                })}
+                children={getBillingFields(placeOrderDetails)}
               />
             </UiEntity>
           </UiEntity>

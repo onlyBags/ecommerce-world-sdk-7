@@ -1,40 +1,84 @@
 import config from "../config";
+const baseUrl =
+  "https://pub-d74340d79d8e4ff6953ce683be56feac.r2.dev/sdk/images";
 
 export const images = {
-  closeIcon: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/Close.png`,
-  cartIcon: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/1.png`,
+  closeIcon: `${baseUrl}/images/Close.png`,
+  cartIcon: `${baseUrl}/images/1.png`,
   success: {
-    successIcon: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/Success.png`,
+    successIcon: `${baseUrl}/images/Success.png`,
   },
   payments: {
-    binance: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/payments/Binance2.png`,
-    coinbase: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/payments/Coinbase2.png`,
-    creditCard: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/payments/Credit-Card.png`,
-    finalStep: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/payments/Final-Step.png`,
-    bag: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/payments/Ice.png`,
-    line: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/payments/Line.png`,
-    payment: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/payments/Payment.png`,
+    binance: `${baseUrl}/images/payments/Binance2.png`,
+    coinbase: `${baseUrl}/images/payments/Coinbase2.png`,
+    creditCard: `${baseUrl}/images/payments/Credit-Card.png`,
+    finalStep: `${baseUrl}/images/payments/Final-Step.png`,
+    bag: `${baseUrl}/images/payments/Ice.png`,
+    line: `${baseUrl}/images/payments/Line.png`,
+    payment: `${baseUrl}/images/payments/Payment.png`,
   },
   error: {
-    errorIcon: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/error/Error.png`,
+    errorIcon: `${baseUrl}/images/error/Error.png`,
   },
   contact: {
-    checkboxEmpty: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/contact/CheckBoxEmpty.png`,
-    checkboxFilled: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/contact/CheckBoxFilled.png`,
-    contact: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/contact/Contact.png`,
+    checkboxEmpty: `${baseUrl}/images/contact/CheckBoxEmpty.png`,
+    checkboxFilled: `${baseUrl}/images/contact/CheckBoxFilled.png`,
+    contact: `${baseUrl}/images/contact/Contact.png`,
   },
   steps: {
-    firstStep: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/steps/First-Step.png`,
-    secondStep: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/steps/Second-Step.png`,
-    finalStep: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/steps/Final-Step.png`,
+    firstStep: `${baseUrl}/images/steps/First-Step.png`,
+    secondStep: `${baseUrl}/images/steps/Second-Step.png`,
+    finalStep: `${baseUrl}/images/steps/Final-Step.png`,
   },
   cart: {
-    line: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/cart/Line.png`,
-    line82: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/cart/Line82.png`,
-    trash: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/cart/Trash.png`,
+    line: `${baseUrl}/images/cart/Line.png`,
+    line82: `${baseUrl}/images/cart/Line82.png`,
+    trash: `${baseUrl}/images/cart/Trash.png`,
   },
   article: {
-    cardPayments: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/article/Card-Payments.png`,
-    plusIcon: `${config.baseUrl}/sdk-image-res?src=https://only-bags.s3.us-east-1.amazonaws.com/sdk/images/article/PlusIcon.png`,
+    cardPayments: `${baseUrl}/images/article/Card-Payments.png`,
+    plusIcon: `${baseUrl}/images/article/PlusIcon.png`,
   },
 };
+
+// export const images = {
+//   trash: `${baseUrl}/cart/Trash.png`,
+//   line: `${baseUrl}/cart/Line.png`,
+//   line82: `${baseUrl}/cart/Line82.png`,
+//   close: `${baseUrl}/cart/Close.png`,
+//   cardPayment: `${baseUrl}/article/Card-Payments.png`,
+//   linePayments: `${baseUrl}/payments/Line.png`,
+//   plusIcon: `${baseUrl}/article/Plus-Icon.png`,
+//   //images/contact/Contact.png
+//   contact: `${baseUrl}/contact/Contact.png`,
+//   // 'images/contact/CheckBoxFilled.png' : 'images/contact/CheckBoxEmpty.png'
+//   checkBoxFilled: `${baseUrl}/contact/CheckBoxFilled.png`,
+//   checkBoxEmpty: `${baseUrl}/contact/CheckBoxEmpty.png`,
+//   cartImg1: `${baseUrl}/1.png`,
+//   // 'images/payments/Payment.png'
+//   payment: `${baseUrl}/payments/Payment.png`,
+//   //  'images/payments/Final-Step.png'
+//   finalStep: `${baseUrl}/payments/Final-Step.png`,
+//   // 'images/payments/Ice2.png'
+//   bagLogo: `${baseUrl}/payments/Ice2.png`,
+//   // 'images/payments/Coinbase2.png'
+//   coinbase: `${baseUrl}/payments/Coinbase2.png`,
+//   // 'images/payments/Binance2.png'
+//   binance: `${baseUrl}/payments/Binance2.png`,
+//   // 'images/payments/Credit-Card.png'
+//   creditCard: `${baseUrl}/payments/Credit-Card.png`,
+//   // 'images/Close.png'
+//   grlClose: `${baseUrl}/Close.png`,
+//   // 'images/Cancel_btn.png'
+//   cancelBtn: `${baseUrl}/Cancel_btn.png`,
+//   // images/error/Error.png'
+//   error: `${baseUrl}/error/Error.png`,
+//   // images/contact/First-Step.png
+//   contactFirstStep: `${baseUrl}/contact/First-Step.png`,
+//   // images/contact/Second-Step.png
+//   contactSecondStep: `${baseUrl}/contact/Second-Step.png`,
+//   // images/contact/Third-Step.png
+//   contacThirdStep: `${baseUrl}/contact/Third-Step.png`,
+//   //  'images/success/Success.png'
+//   success: `${baseUrl}/success/Success.png`
+// }

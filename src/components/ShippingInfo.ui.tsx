@@ -179,42 +179,49 @@ export const ShippingInfo = ({
             }}
           >
             <ModalFormContainer
-              children={fields.map((field) => {
-                return (
-                  <UiEntity uiTransform={CONTAINER_BASE_PROPS} key={field.key}>
-                    <Label
-                      value={field.label}
-                      fontSize={LABEL_FONT_SIZE}
-                      textAlign="top-left"
-                      color={
-                        hasErrors &&
-                        field.required &&
-                        !placeOrderDetails.shipping[field.key]
-                          ? Color4.Red()
-                          : Color4.Black()
-                      }
-                      uiTransform={LABEL_TRANSFORM}
-                    />
+              children={
+                <UiEntity>
+                  {fields.map((field) => {
+                    return (
+                      <UiEntity
+                        uiTransform={CONTAINER_BASE_PROPS}
+                        key={field.key}
+                      >
+                        <Label
+                          value={field.label}
+                          fontSize={LABEL_FONT_SIZE}
+                          textAlign="top-left"
+                          color={
+                            hasErrors &&
+                            field.required &&
+                            !placeOrderDetails.shipping[field.key]
+                              ? Color4.Red()
+                              : Color4.Black()
+                          }
+                          uiTransform={LABEL_TRANSFORM}
+                        />
 
-                    <Input
-                      value={
-                        hasUserData
-                          ? userData?.shippingAddress[selectedAddressIndex]?.[
-                              field.key
-                            ]
-                          : placeOrderDetails.shipping[field.key]
-                      }
-                      onChange={(e: string) => {
-                        placeOrderDetails.shipping[field.key] = e;
-                      }}
-                      uiTransform={INPUT_TRANSFORM}
-                      fontSize={INPUT_FONT_SIZE}
-                      color={Color4.Black()}
-                      disabled={hasUserData}
-                    />
-                  </UiEntity>
-                );
-              })}
+                        <Input
+                          value={
+                            hasUserData
+                              ? userData?.shippingAddress[
+                                  selectedAddressIndex
+                                ]?.[field.key]
+                              : placeOrderDetails.shipping[field.key]
+                          }
+                          onChange={(e: string) => {
+                            placeOrderDetails.shipping[field.key] = e;
+                          }}
+                          uiTransform={INPUT_TRANSFORM}
+                          fontSize={INPUT_FONT_SIZE}
+                          color={Color4.Black()}
+                          disabled={hasUserData}
+                        />
+                      </UiEntity>
+                    );
+                  })}
+                </UiEntity>
+              }
             />
             <UiEntity
               uiTransform={{

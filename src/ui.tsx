@@ -38,6 +38,8 @@ import { ListOfItems } from "./components/ListOfItems";
 import { EcommerceComponents, createComponents } from "./components";
 import { EngineComponents } from "./definitions";
 
+import ContractConfig from "./web3/contractConfig";
+
 let initialized: boolean = false;
 
 let components: EngineComponents;
@@ -126,10 +128,7 @@ const joystickCb = ({
   mutableTransform.scale = Vector3.create(sizeX, sizeY, sizeZ);
 };
 
-export const connectToEcommerce = async (
-  datasourceId: number,
-  ecs: typeof typeEcs
-) => {
+export const connectToEcommerce = async (datasourceId: number, ecs: any) => {
   if (initialized) return;
   initialized = true;
   try {
@@ -169,93 +168,91 @@ const getStoreData = async (datasourceId: number) => {
   }
 };
 
-export const OBStoreUI = () => {
-  return (
-    <UiEntity uiTransform={{ width: "100%" }}>
-      {isArticleOpen && selectedArticle && (
-        <ArticleInfo
-          selectedArticle={selectedArticle}
-          selectedAttributes={selectedAttributes}
-          articleType={articleType}
-          goToShipping={goToShipping}
-          placeOrderDetails={placeOrderDetails}
-          closeModal={closeArticleModal}
-          addToCartIcon={addToCartIcon}
-        />
-      )}
-      {/*BUY NOaddToCartIcon -> SHIPPING INFO*/}
-      {isShippingInfoOpen && placeOrderDetails.lineItems.length > 0 && (
-        <ShippingInfo
-          goToBillingInfo={goToBillingInfo}
-          goBackToArticle={goBackToArticle}
-          placeOrderDetails={placeOrderDetails}
-          userData={userData}
-          closeModal={closeShippingModal}
-        />
-      )}
-      {/* BILLING INFO */}
-      {isBillingInfoOpen && (
-        <BillingInfo
-          goToReviewInfo={goToReviewInfo}
-          goBackToShipping={goBackToShipping}
-          placeOrderDetails={placeOrderDetails}
-          userData={userData}
-          closeModal={closeBillingModal}
-        />
-      )}
-      {/* REVIEW INFO */}
-      {isReviewInfoOpen && (
-        <ReviewInfo
-          goToCartModal={goToCartModal}
-          goBackToBilling={goBackToBilling}
-          placeOrderDetails={placeOrderDetails}
-          closeModal={closeReviewModal}
-        />
-      )}
-
-      {/* CART MODAL */}
-      {isCartOpen && placeOrderDetails.lineItems.length > 0 && (
-        <CartModal
-          goToCheckout={goToCheckout}
-          placeOrderDetails={placeOrderDetails}
-          removeFromCart={removeFromCart}
-          closeModal={closeCartModal}
-        />
-      )}
-
-      {/* CHECKOUT MODAL */}
-      {isCheckoutOpen && (
-        <CheckoutModal
-          placeOrderDetails={placeOrderDetails}
-          closeModal={closeCheckoutModal}
-        />
-      )}
-      {/* MODALS MESSAGE */}
-      {isInfoModalOpen && (
-        <SuccessModal btnHandler={infoModalHandler} message={infoMessage} />
-      )}
-      {isErrorModalOpen && (
-        <ErrorModal closeModal={closeErrorModal} message={errorMessage} />
-      )}
-
-      {/* CART ICON */}
-      <CartIcon
-        closeModal={closeListOfItemsModal}
-        lineItems={placeOrderDetails.lineItems}
-        totalQuantityProduct={totalQuantityProduct}
+export const OBStoreUI = (): ReactEcs.JSX.Element => (
+  <UiEntity uiTransform={{ width: "100%" }}>
+    {isArticleOpen && selectedArticle && (
+      <ArticleInfo
+        selectedArticle={selectedArticle}
+        selectedAttributes={selectedAttributes}
+        articleType={articleType}
+        goToShipping={goToShipping}
+        placeOrderDetails={placeOrderDetails}
+        closeModal={closeArticleModal}
+        addToCartIcon={addToCartIcon}
       />
-      {/* CartIcon ->ListOfItems */}
-      {isListOfItemsOpen && placeOrderDetails.lineItems.length > 0 && (
-        <ListOfItems
-          goToShipping={goFromListItemsToShipping}
-          placeOrderDetails={placeOrderDetails}
-          removeFromCart={removeFromCart}
-          closeModal={closeListOfItemsModal}
-        />
-      )}
-    </UiEntity>
-  );
-};
+    )}
+    {/*BUY NOaddToCartIcon -> SHIPPING INFO*/}
+    {isShippingInfoOpen && placeOrderDetails.lineItems.length > 0 && (
+      <ShippingInfo
+        goToBillingInfo={goToBillingInfo}
+        goBackToArticle={goBackToArticle}
+        placeOrderDetails={placeOrderDetails}
+        userData={userData}
+        closeModal={closeShippingModal}
+      />
+    )}
+    {/* BILLING INFO */}
+    {isBillingInfoOpen && (
+      <BillingInfo
+        goToReviewInfo={goToReviewInfo}
+        goBackToShipping={goBackToShipping}
+        placeOrderDetails={placeOrderDetails}
+        userData={userData}
+        closeModal={closeBillingModal}
+      />
+    )}
+    {/* REVIEW INFO */}
+    {isReviewInfoOpen && (
+      <ReviewInfo
+        goToCartModal={goToCartModal}
+        goBackToBilling={goBackToBilling}
+        placeOrderDetails={placeOrderDetails}
+        closeModal={closeReviewModal}
+      />
+    )}
+
+    {/* CART MODAL */}
+    {isCartOpen && placeOrderDetails.lineItems.length > 0 && (
+      <CartModal
+        goToCheckout={goToCheckout}
+        placeOrderDetails={placeOrderDetails}
+        removeFromCart={removeFromCart}
+        closeModal={closeCartModal}
+      />
+    )}
+
+    {/* CHECKOUT MODAL */}
+    {isCheckoutOpen && (
+      <CheckoutModal
+        placeOrderDetails={placeOrderDetails}
+        closeModal={closeCheckoutModal}
+      />
+    )}
+    {/* MODALS MESSAGE */}
+    {isInfoModalOpen && (
+      <SuccessModal btnHandler={infoModalHandler} message={infoMessage} />
+    )}
+    {isErrorModalOpen && (
+      <ErrorModal closeModal={closeErrorModal} message={errorMessage} />
+    )}
+
+    {/* CART ICON */}
+    <CartIcon
+      closeModal={closeListOfItemsModal}
+      lineItems={placeOrderDetails.lineItems}
+      totalQuantityProduct={totalQuantityProduct}
+    />
+    {/* CartIcon ->ListOfItems */}
+    {isListOfItemsOpen && placeOrderDetails.lineItems.length > 0 && (
+      <ListOfItems
+        goToShipping={goFromListItemsToShipping}
+        placeOrderDetails={placeOrderDetails}
+        removeFromCart={removeFromCart}
+        closeModal={closeListOfItemsModal}
+      />
+    )}
+  </UiEntity>
+);
 //FUNCTIONS GO TO
 // step.1 open article
 export function goToArticleDetail(article: Article) {

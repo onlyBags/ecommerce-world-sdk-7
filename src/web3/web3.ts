@@ -25,22 +25,29 @@ import ContractConfig from "./contractConfig";
 const { blastProviderrUrl, metaTxServer } = config;
 
 class Web3 {
-  private blastProvider;
-  private blastRequestManager;
-  private blastFactory;
+  private blastProvider: any;
+  private blastRequestManager: any;
+  private blastFactory: any;
   private blastContract: any;
 
-  private mainnetProvider;
-  private mainnetRequestManager;
-  private mainnetFactory;
+  private mainnetProvider: any;
+  private mainnetRequestManager: any;
+  private mainnetFactory: any;
   private mainnetContract: any;
 
-  private dgLiveProvider;
-  private dgLiveFactory;
-  private dgLiveRequestManager;
-  private dgLiveContract: any;
+  private dgLiveProvider: any;
+  private dgLiveFactory: any;
+  private dgLiveRequestManager: any;
+  private marketplaceContract: any;
 
   constructor() {
+    this.initWeb3();
+  }
+
+  private async initWeb3() {
+    if (!ContractConfig.getContractConfigByName("bag")?.abi) {
+      await ContractConfig.forceFetch();
+    }
     const bagAbi = ContractConfig.getContractConfigByName("bag").abi;
     const marketplaceAbi =
       ContractConfig.getContractConfigByName("marketplace").abi;
@@ -63,12 +70,11 @@ class Web3 {
     );
     this.createContracts();
   }
-
   private async createContracts() {
     this.blastContract = await this.blastFactory.at(
       ContractConfig.getContractConfigByName("bag").address
     );
-    this.dgLiveContract = await this.dgLiveFactory.at(
+    this.marketplaceContract = await this.dgLiveFactory.at(
       ContractConfig.getContractConfigByName("marketplace").address
     );
     this.mainnetContract = await this.mainnetFactory.at(
@@ -109,6 +115,9 @@ class Web3 {
   };
 
   public approve = async (wallet: string): Promise<string> => {
+    // Hacer redirect aca a la mini web
+    console.error("**READ ME**");
+    return "no";
     return new Promise(async (resolve, reject) => {
       const approveHex = await this.blastContract.approve.toPayload(
         ContractConfig.getContractConfigByName("marketplace").address,
@@ -189,7 +198,7 @@ class Web3 {
     cb: (message: string) => void
   ) => {
     try {
-      const approveHex = await this.dgLiveContract.pay.toPayload(
+      const approveHex = await this.marketplaceContract.pay.toPayload(
         id,
         price,
         beneficiaryWallet,
@@ -203,7 +212,7 @@ class Web3 {
         { name: "functionSignature", type: "bytes" },
       ];
 
-      const nonce = await this.dgLiveContract.getNonce(userWallet);
+      const nonce = await this.marketplaceContract.getNonce(userWallet);
       const message = {
         nonce,
         from: userWallet,

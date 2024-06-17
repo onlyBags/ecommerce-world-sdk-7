@@ -198,35 +198,42 @@ export const BillingInfo = ({
             }}
           >
             <ModalFormContainer
-              children={fields.map((field) => {
-                return (
-                  <UiEntity uiTransform={CONTAINER_BASE_PROPS} key={field.key}>
-                    <Label
-                      value={field.label}
-                      fontSize={LABEL_FONT_SIZE}
-                      textAlign="top-left"
-                      color={
-                        hasErrors &&
-                        field.required &&
-                        !placeOrderDetails.billing[field.key]
-                          ? Color4.Red()
-                          : Color4.Black()
-                      }
-                      uiTransform={LABEL_TRANSFORM}
-                    />
+              children={
+                <UiEntity>
+                  {fields.map((field) => {
+                    return (
+                      <UiEntity
+                        uiTransform={CONTAINER_BASE_PROPS}
+                        key={field.key}
+                      >
+                        <Label
+                          value={field.label}
+                          fontSize={LABEL_FONT_SIZE}
+                          textAlign="top-left"
+                          color={
+                            hasErrors &&
+                            field.required &&
+                            !placeOrderDetails.billing[field.key]
+                              ? Color4.Red()
+                              : Color4.Black()
+                          }
+                          uiTransform={LABEL_TRANSFORM}
+                        />
 
-                    <Input
-                      value={placeOrderDetails.billing[field.key]}
-                      onChange={(e: string) => {
-                        placeOrderDetails.billing[field.key] = e;
-                      }}
-                      uiTransform={INPUT_TRANSFORM}
-                      fontSize={INPUT_FONT_SIZE}
-                      color={Color4.Black()}
-                    />
-                  </UiEntity>
-                );
-              })}
+                        <Input
+                          value={placeOrderDetails.billing[field.key]}
+                          onChange={(e: string) => {
+                            placeOrderDetails.billing[field.key] = e;
+                          }}
+                          uiTransform={INPUT_TRANSFORM}
+                          fontSize={INPUT_FONT_SIZE}
+                          color={Color4.Black()}
+                        />
+                      </UiEntity>
+                    );
+                  })}
+                </UiEntity>
+              }
             />
             <UiEntity
               uiTransform={{

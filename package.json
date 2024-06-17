@@ -6,7 +6,8 @@
   "typings": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "start": "tsc -p tsconfig.json -watch"
+    "start": "tsc -p tsconfig.json -watch",
+    "upgrade-sdk": "npm install --save-dev @dcl/sdk@latest"
   },
   "repository": {
     "type": "git"
@@ -24,14 +25,15 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@dcl-sdk/utils": "latest",
-    "@dcl/sdk": "latest",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.2",
+    "@dcl/asset-packs": "^1.20.0",
+    "@dcl/sdk": "latest"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
-    "@dcl/js-runtime": "^7.4.3",
+    "@dcl/js-runtime": "7.5.3",
     "decentraland-ecs": "^6.12.3"
   }
 }
