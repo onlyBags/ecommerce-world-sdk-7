@@ -1,18 +1,36 @@
 import { Entity } from "@dcl/sdk/ecs";
 
-export interface Article {
+export interface Slot {
+  id: number;
+  name: string;
+  enabled: boolean;
+  woocommerceProduct: WoocommerceProduct;
+  magentoProduct: WoocommerceProduct;
+  posX: number;
+  posY: number;
+  posZ: number;
+  sizeX: number;
+  sizeY: number;
+  sizeZ: number;
+  rotX: number;
+  rotY: number;
+  rotZ: number;
+  image: string;
+}
+
+export interface WoocommerceProduct {
   id: number;
   variationId?: number;
   productId: number;
-  syncedAt: Date;
+  syncedAt: string;
   datasourceId: number;
   name: string;
   slug: string;
   permalink: string;
-  dateCreated: Date;
-  dateCreatedGmt: null;
-  dateModified: Date;
-  dateModifiedGmt: null;
+  dateCreated: string;
+  dateCreatedGmt: string | null;
+  dateModified: string;
+  dateModifiedGmt: string | null;
   type: string;
   status: string;
   featured: boolean;
@@ -23,17 +41,17 @@ export interface Article {
   price: string;
   regularPrice: string;
   salePrice: string;
-  dateOnSaleFrom: null;
-  dateOnSaleFromGmt: null;
-  dateOnSaleTo: null;
-  dateOnSaleToGmt: null;
-  priceHtml: null;
+  dateOnSaleFrom: string | null;
+  dateOnSaleFromGmt: string | null;
+  dateOnSaleTo: string | null;
+  dateOnSaleToGmt: string | null;
+  priceHtml: string | null;
   onSale: boolean;
   purchasable: boolean;
   totalSales: number;
   virtual: boolean;
   downloadable: boolean;
-  downloads: null;
+  downloads: any[] | null;
   downloadLimit: number;
   downloadExpiry: number;
   externalUrl: string;
@@ -41,7 +59,7 @@ export interface Article {
   taxStatus: string;
   taxClass: string;
   manageStock: boolean;
-  stockQuantity: null;
+  stockQuantity: number | null;
   stockStatus: string;
   backorders: string;
   backordersAllowed: boolean;
@@ -60,15 +78,14 @@ export interface Article {
   crossSellIds: string;
   parentId: number;
   purchaseNote: string;
-  defaultAttributes: null;
+  defaultAttributes: any | null;
   variations: string;
   groupedProducts: string;
   menuOrder: number;
-  jetpackPublicizeConnections: null;
+  jetpackPublicizeConnections: any | null;
   images: Image[];
   categories: Category[];
   attributes: Attribute[];
-  slot: Slot[];
 }
 
 export interface Attribute {
@@ -103,22 +120,6 @@ export interface Image {
   src: string;
   name: string;
   alt: null;
-}
-
-export interface Slot {
-  id: number;
-  enabled: boolean;
-  name: string;
-  posX: number;
-  posY: number;
-  posZ: number;
-  rotX: number;
-  rotY: number;
-  rotZ: number;
-  sizeX: number;
-  sizeY: number;
-  sizeZ: number;
-  image: string;
 }
 
 export interface ShippingLine {

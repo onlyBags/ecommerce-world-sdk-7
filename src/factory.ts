@@ -3,21 +3,22 @@ import { Vector3 } from "@dcl/sdk/math";
 import { Quaternion } from "@dcl/sdk/math";
 
 import config from "./config";
-import { Article, WsSlot } from "./types";
+import { Slot, WoocommerceProduct, WsSlot } from "./types";
 import { EcommerceComponents } from "./components";
 
 const { baseUrl } = config;
 
 export const createItem = ({
-  article,
+  slot,
   cb,
   slots,
 }: {
-  article: Article;
-  cb: (article: Article) => void;
+  slot: Slot;
+  cb: (article: WoocommerceProduct) => void;
   slots: WsSlot[];
 }) => {
-  if (article.slot.length && article.slot[0].enabled) {
+  if (!!slot && slot.enabled) {
+    const article = slot.woocommerceProduct;
     const eComponents = EcommerceComponents.getInstance();
     const engine = eComponents.getEngine();
     const ecs = eComponents.getEcs();
@@ -29,14 +30,13 @@ export const createItem = ({
       PointerEventsSystem,
     } = eComponents.getComponents();
     const itemEntity = engine.addEntity();
-    const slot = article.slot[0];
     Transform.create(itemEntity, {
       position: Vector3.create(slot.posX, slot.posY, slot.posZ),
       scale: Vector3.create(slot.sizeX, slot.sizeY, slot.sizeZ),
       rotation: Quaternion.fromEulerDegrees(slot.rotX, slot.rotY, slot.rotZ),
     });
     const slotImage = `${baseUrl}/image?src=${
-      slot.image || article.images[0].src
+      slot.image || slot.woocommerceProduct.images[0].src
     }`;
     Material.setBasicMaterial(itemEntity, {
       texture: Material.Texture.Common({
@@ -57,7 +57,7 @@ export const createItem = ({
       () => cb(article)
     );
     const wsSlot = {
-      slotId: article.slot[0].id,
+      slotId: slot.id,
       entity: itemEntity,
     };
     slots.push(wsSlot);

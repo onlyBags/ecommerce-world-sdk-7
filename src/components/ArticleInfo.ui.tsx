@@ -1,7 +1,7 @@
 import { Color4 } from "@dcl/sdk/math";
 import ReactEcs, { Dropdown, Label, UiEntity } from "@dcl/sdk/react-ecs";
 import {
-  Article,
+  WoocommerceProduct,
   LineItem,
   PlaceOrderDetails,
   SelectedAttributes,
@@ -18,7 +18,7 @@ import { images } from "../assets/images";
 const { baseUrl, maxItemQuantity } = config;
 
 interface ArticleInfoProps {
-  selectedArticle: Article;
+  selectedArticle: WoocommerceProduct;
   selectedAttributes: SelectedAttributes;
   goToShipping: () => void;
   addToCartIcon: () => void;
@@ -43,7 +43,7 @@ const handleAddProductToCart = async ({
   goToShipping,
 }: {
   placeOrderDetails: PlaceOrderDetails;
-  selectedArticle: Article;
+  selectedArticle: WoocommerceProduct;
   goToShipping: () => void;
 }) => {
   // console.log('selectedArticle: ', selectedArticle)
@@ -79,7 +79,7 @@ const handleAddProductToCartIcon = async ({
   addToCartIcon,
 }: {
   placeOrderDetails: PlaceOrderDetails;
-  selectedArticle: Article;
+  selectedArticle: WoocommerceProduct;
   addToCartIcon: () => void;
 }) => {
   // console.log('selectedArticle: ', selectedArticle)
@@ -396,7 +396,7 @@ export const ArticleInfo = ({
                 uiBackground={{
                   textureMode: "center",
                   texture: {
-                    src: "./Card-Payments.png",
+                    src: `${images.article.cardPayments}`,
                   },
                 }}
               />

@@ -1,6 +1,5 @@
 import config from "../config";
-const baseUrl =
-  "https://pub-d74340d79d8e4ff6953ce683be56feac.r2.dev/sdk/images";
+const baseUrl = "https://pub-d74340d79d8e4ff6953ce683be56feac.r2.dev/sdk";
 
 export const images = {
   closeIcon: `${baseUrl}/images/Close.png`,
@@ -37,7 +36,7 @@ export const images = {
   },
   article: {
     cardPayments: `${baseUrl}/images/article/Card-Payments.png`,
-    plusIcon: `${baseUrl}/images/article/PlusIcon.png`,
+    plusIcon: `${baseUrl}/images/article/Plus-Icon.png`,
   },
 };
 

@@ -15,12 +15,12 @@ import { CartModal } from "./components/CartModal.ui";
 import { ReviewInfo } from "./components/ReviewInfo.ui";
 import {
   PlaceOrderDetails,
-  type Article,
+  type Slot,
   SelectedAttributes,
-  Slot,
   WsSlot,
   joystickData,
   UserData,
+  WoocommerceProduct,
 } from "./types";
 import { SuccessModal } from "./components/SuccessModal.ui";
 import { ErrorModal } from "./components/ErrorModal.ui";
@@ -37,8 +37,6 @@ import { web3 } from "./web3/web3";
 import { ListOfItems } from "./components/ListOfItems";
 import { EcommerceComponents, createComponents } from "./components";
 import { EngineComponents } from "./definitions";
-
-import ContractConfig from "./web3/contractConfig";
 
 let initialized: boolean = false;
 
@@ -62,7 +60,7 @@ let errorMessage: string = "";
 let infoMessage: string = "";
 
 //SELECTIONS
-let selectedArticle: Article | null = null;
+let selectedArticle: WoocommerceProduct | null = null;
 let selectedAttributes: SelectedAttributes = {};
 let selectedOptions: Record<string, string> = {};
 let articleType: string = "simple";
@@ -153,13 +151,11 @@ const getStoreData = async (datasourceId: number) => {
       userData = data.data;
     }
     console.log("userData", userData);
-    const res = await http.get<Article[]>(
-      `woocommerce/catalog/${datasourceId}`
-    );
+    const res = await http.get<Slot[]>(`catalog/slots/${datasourceId}`);
     if (res.status === 200) {
       if (res.data.length) {
-        res.data.forEach((article) => {
-          createItem({ article, cb: goToArticleDetail, slots });
+        res.data.forEach((slot) => {
+          createItem({ slot, cb: goToArticleDetail, slots });
         });
       }
     }
@@ -255,7 +251,7 @@ export const OBStoreUI = (): ReactEcs.JSX.Element => (
 );
 //FUNCTIONS GO TO
 // step.1 open article
-export function goToArticleDetail(article: Article) {
+export function goToArticleDetail(article: WoocommerceProduct) {
   article.attributes.forEach((attribute) => {
     selectedAttributes[attribute.name] = attribute.options[0].value[0];
   });
