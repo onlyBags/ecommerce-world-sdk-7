@@ -8,6 +8,7 @@ import ModalLeft from "./ModalLeft";
 import ModalStep from "./ModalStep.ui";
 import {
   CONTAINER_BASE_PROPS,
+  FORM_FIELDS_PROPS,
   INPUT_FONT_SIZE,
   INPUT_TRANSFORM,
   LABEL_FONT_SIZE,
@@ -199,13 +200,10 @@ export const BillingInfo = ({
           >
             <ModalFormContainer
               children={
-                <UiEntity>
+                <UiEntity uiTransform={CONTAINER_BASE_PROPS}>
                   {fields.map((field) => {
                     return (
-                      <UiEntity
-                        uiTransform={CONTAINER_BASE_PROPS}
-                        key={field.key}
-                      >
+                      <UiEntity key={field.key} uiTransform={FORM_FIELDS_PROPS}>
                         <Label
                           value={field.label}
                           fontSize={LABEL_FONT_SIZE}

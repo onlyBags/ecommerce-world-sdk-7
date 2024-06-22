@@ -1,4 +1,3 @@
-import config from "../config";
 const baseUrl = "https://pub-d74340d79d8e4ff6953ce683be56feac.r2.dev/sdk";
 
 export const images = {
@@ -12,7 +11,7 @@ export const images = {
     coinbase: `${baseUrl}/images/payments/Coinbase2.png`,
     creditCard: `${baseUrl}/images/payments/Credit-Card.png`,
     finalStep: `${baseUrl}/images/payments/Final-Step.png`,
-    bag: `${baseUrl}/images/payments/Ice.png`,
+    bag: `${baseUrl}/images/payments/bag.png`,
     line: `${baseUrl}/images/payments/Line.png`,
     payment: `${baseUrl}/images/payments/Payment.png`,
   },

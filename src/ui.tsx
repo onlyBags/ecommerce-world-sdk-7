@@ -20,7 +20,7 @@ import {
   WsSlot,
   joystickData,
   UserData,
-  WoocommerceProduct,
+  Article,
 } from "./types";
 import { SuccessModal } from "./components/SuccessModal.ui";
 import { ErrorModal } from "./components/ErrorModal.ui";
@@ -60,7 +60,7 @@ let errorMessage: string = "";
 let infoMessage: string = "";
 
 //SELECTIONS
-let selectedArticle: WoocommerceProduct | null = null;
+let selectedArticle: Article | null = null;
 let selectedAttributes: SelectedAttributes = {};
 let selectedOptions: Record<string, string> = {};
 let articleType: string = "simple";
@@ -150,7 +150,6 @@ const getStoreData = async (datasourceId: number) => {
       const data = await web3.getUserData(wallet);
       userData = data.data;
     }
-    console.log("userData", userData);
     const res = await http.get<Slot[]>(`catalog/slots/${datasourceId}`);
     if (res.status === 200) {
       if (res.data.length) {
@@ -251,7 +250,7 @@ export const OBStoreUI = (): ReactEcs.JSX.Element => (
 );
 //FUNCTIONS GO TO
 // step.1 open article
-export function goToArticleDetail(article: WoocommerceProduct) {
+export function goToArticleDetail(article: Article) {
   article.attributes.forEach((attribute) => {
     selectedAttributes[attribute.name] = attribute.options[0].value[0];
   });

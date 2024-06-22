@@ -14,6 +14,7 @@ import {
   LABEL_TRANSFORM,
   MODAL_RIGHT_SIZE,
   MODAL_SIZE,
+  FORM_FIELDS_PROPS,
 } from "../utils";
 import ModalFormContainer from "./ModalFormContainer.ui";
 import { images } from "../assets/images";
@@ -93,12 +94,12 @@ const shippingFields: {
 ];
 const getBillingFields = (placeOrderDetails: PlaceOrderDetails) => {
   return (
-    <UiEntity>
+    <UiEntity uiTransform={CONTAINER_BASE_PROPS}>
       {billingFields.map((field) => {
         return (
           <UiEntity
             uiTransform={{
-              ...CONTAINER_BASE_PROPS,
+              ...FORM_FIELDS_PROPS,
               width: 220,
             }}
             key={field.key}
@@ -194,12 +195,12 @@ export const ReviewInfo = ({
               />
               <ModalFormContainer
                 children={
-                  <UiEntity>
+                  <UiEntity uiTransform={CONTAINER_BASE_PROPS}>
                     {shippingFields.map((field) => {
                       return (
                         <UiEntity
                           uiTransform={{
-                            ...CONTAINER_BASE_PROPS,
+                            ...FORM_FIELDS_PROPS,
                             width: 220,
                           }}
                           key={field.key}

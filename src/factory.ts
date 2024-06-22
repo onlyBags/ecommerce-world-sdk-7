@@ -3,7 +3,7 @@ import { Vector3 } from "@dcl/sdk/math";
 import { Quaternion } from "@dcl/sdk/math";
 
 import config from "./config";
-import { Slot, WoocommerceProduct, WsSlot } from "./types";
+import { Slot, Article, WsSlot } from "./types";
 import { EcommerceComponents } from "./components";
 
 const { baseUrl } = config;
@@ -14,11 +14,11 @@ export const createItem = ({
   slots,
 }: {
   slot: Slot;
-  cb: (article: WoocommerceProduct) => void;
+  cb: (article: Article) => void;
   slots: WsSlot[];
 }) => {
   if (!!slot && slot.enabled) {
-    const article = slot.woocommerceProduct;
+    const article = slot.article;
     const eComponents = EcommerceComponents.getInstance();
     const engine = eComponents.getEngine();
     const ecs = eComponents.getEcs();
@@ -36,7 +36,7 @@ export const createItem = ({
       rotation: Quaternion.fromEulerDegrees(slot.rotX, slot.rotY, slot.rotZ),
     });
     const slotImage = `${baseUrl}/image?src=${
-      slot.image || slot.woocommerceProduct.images[0].src
+      slot.image || slot.article.images[0].src
     }`;
     Material.setBasicMaterial(itemEntity, {
       texture: Material.Texture.Common({

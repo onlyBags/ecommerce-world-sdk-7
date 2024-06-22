@@ -15,10 +15,9 @@ function selectOption(index: number) {
 }
 
 enum PaymentMethod {
-  Ice = "Ice",
+  Bag = "Bag",
   Coinbase = "Coinbase",
   Binance = "Binance",
-  CreditCard = "CreditCard",
 }
 let selectedPayment: PaymentMethod;
 let isPaying: boolean = false;
@@ -148,7 +147,7 @@ export const CheckoutModal = ({
               <UiEntity
                 uiBackground={{
                   color:
-                    selectedPayment === PaymentMethod.Ice
+                    selectedPayment === PaymentMethod.Bag
                       ? Color4.Black()
                       : Color4.fromHexString("#E5E5E5"),
                 }}
@@ -164,7 +163,7 @@ export const CheckoutModal = ({
                       src: images.payments.bag,
                     },
                   }}
-                  onMouseDown={() => (selectedPayment = PaymentMethod.Ice)}
+                  onMouseDown={() => (selectedPayment = PaymentMethod.Bag)}
                 />
               </UiEntity>
               <UiEntity
@@ -209,30 +208,6 @@ export const CheckoutModal = ({
                     },
                   }}
                   onMouseDown={() => (selectedPayment = PaymentMethod.Binance)}
-                />
-              </UiEntity>
-              <UiEntity
-                uiBackground={{
-                  color:
-                    selectedPayment === PaymentMethod.CreditCard
-                      ? Color4.Black()
-                      : Color4.fromHexString("#E5E5E5"),
-                }}
-                uiTransform={{ width: 250 }}
-              >
-                <UiEntity
-                  uiTransform={{
-                    width: 300,
-                  }}
-                  uiBackground={{
-                    textureMode: "center",
-                    texture: {
-                      src: images.payments.creditCard,
-                    },
-                  }}
-                  onMouseDown={() =>
-                    (selectedPayment = PaymentMethod.CreditCard)
-                  }
                 />
               </UiEntity>
             </UiEntity>

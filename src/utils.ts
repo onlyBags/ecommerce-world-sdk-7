@@ -3,7 +3,7 @@ import { UiTransformProps } from "@dcl/sdk/react-ecs";
 
 import { errorModal, infoModal } from "./ui";
 import {
-  WoocommerceProduct,
+  Article,
   LineItem,
   PlaceOrderDetails,
   SelectedAttributes,
@@ -18,9 +18,15 @@ export const LABEL_FONT_SIZE = 10;
 export const INPUT_FONT_SIZE = 12;
 
 export const CONTAINER_BASE_PROPS: UiTransformProps = {
-  height: 54,
+  height: "100%",
   width: 300,
   flexDirection: "column",
+};
+
+export const FORM_FIELDS_PROPS: UiTransformProps = {
+  width: "100%",
+  flexDirection: "row",
+  justifyContent: "space-between",
 };
 
 export const LABEL_TRANSFORM: UiTransformProps = {
@@ -28,7 +34,9 @@ export const LABEL_TRANSFORM: UiTransformProps = {
 };
 
 export const INPUT_TRANSFORM: UiTransformProps = {
-  height: 82,
+  height: 34,
+  width: "80%",
+  maxWidth: "80%",
 };
 
 export const MODAL_SIZE = {
@@ -145,7 +153,7 @@ export async function postOrder(placeOrderDetails: PlaceOrderDetails) {
 }
 
 export const getVariationData = async (
-  selectedArticle: WoocommerceProduct,
+  selectedArticle: Article,
   selectedAttributes: SelectedAttributes
 ) => {
   const queryAttributes = selectedArticle?.attributes
