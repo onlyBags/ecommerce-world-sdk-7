@@ -6,6 +6,7 @@ import { executeTask } from "@dcl/sdk/ecs";
 import { images } from "../assets/images";
 
 interface CheckoutModalProps {
+  datasourceId: number;
   placeOrderDetails: PlaceOrderDetails;
   closeModal: () => void;
 }
@@ -24,29 +25,27 @@ let isPaying: boolean = false;
 let hasSelectedPayment: boolean = true;
 
 export const CheckoutModal = ({
+  datasourceId,
   placeOrderDetails,
   closeModal,
 }: CheckoutModalProps) => {
-  const handlePayment = (paymentMethod: PaymentMethod) => {
+  const handlePayment = async (paymentMethod: PaymentMethod) => {
     selectedPayment = paymentMethod;
     if (!selectedPayment) {
       hasSelectedPayment = false;
       return;
     }
     placeOrderDetails.paymentMethod = paymentMethod;
-
-    executeTask(async () => {
-      try {
-        isPaying = true;
-        hasSelectedPayment = true;
-        const res = await postOrder(placeOrderDetails);
-        console.log(res);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        isPaying = false;
-      }
-    });
+    try {
+      isPaying = true;
+      hasSelectedPayment = true;
+      const res = await postOrder(datasourceId, placeOrderDetails);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      isPaying = false;
+    }
   };
 
   return (

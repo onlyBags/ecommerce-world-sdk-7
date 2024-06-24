@@ -140,7 +140,6 @@ export const ShippingInfo = ({
     hasSaveData = !hasSaveData;
     placeOrderDetails.saveShipping = hasSaveData;
   };
-  console.log("place order", placeOrderDetails);
   return (
     <UiEntity
       uiTransform={{

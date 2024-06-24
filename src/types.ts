@@ -248,7 +248,7 @@ export interface Order {
   iceValueTimestamp: Date;
 }
 
-export interface WcOrderRes {
+export interface OnlyBagsOrderCreatedRes {
   dgLiveOrder: Order;
   raw: RawOrder;
 }
@@ -314,7 +314,7 @@ export interface UserData {
   shippingAddress: Address[];
 }
 
-export type AvailableContracts = "marketplace" | "bag";
+export type AvailableContracts = "ecommerce" | "bag";
 
 export interface DomainData {
   name: string;

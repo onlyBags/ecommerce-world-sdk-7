@@ -7,7 +7,7 @@ import {
   LineItem,
   PlaceOrderDetails,
   SelectedAttributes,
-  WcOrderRes,
+  OnlyBagsOrderCreatedRes,
 } from "./types";
 import config from "./config";
 import { http } from "./http";
@@ -85,7 +85,10 @@ export const calculateTotal = (lineItems: LineItem[]) => {
   return total;
 };
 
-export async function postOrder(placeOrderDetails: PlaceOrderDetails) {
+export async function postOrder(
+  datasourceId: number,
+  placeOrderDetails: PlaceOrderDetails
+) {
   try {
     const wallet = await getUserWallet();
     if (!wallet) return console.log("Error getting user wallet");
@@ -98,7 +101,7 @@ export async function postOrder(placeOrderDetails: PlaceOrderDetails) {
         );
       } else {
         try {
-          infoModal(`Please allow the marketplace to interact in your behalf.`);
+          infoModal(`Please allow onlybags to interact in your behalf.`);
           const approveRes = await web3.approve(wallet);
           console.log("approveRes: ", approveRes);
         } catch (error: any) {
@@ -112,7 +115,7 @@ export async function postOrder(placeOrderDetails: PlaceOrderDetails) {
       }
     }
     if (!wallet) return console.log("Error getting user wallet");
-    const wcOrder: PlaceOrderDetails = {
+    const orderData: PlaceOrderDetails = {
       ...placeOrderDetails,
       wallet,
       lineItems: placeOrderDetails.lineItems.map((x) => ({
@@ -121,9 +124,9 @@ export async function postOrder(placeOrderDetails: PlaceOrderDetails) {
       })),
     };
 
-    const res = await http.post<WcOrderRes>("woocommerce/order", {
-      datasourceId: 1,
-      wcOrder,
+    const res = await http.post<OnlyBagsOrderCreatedRes>("order", {
+      datasourceId,
+      orderData,
     });
     if (res.status === 200) {
       infoModal(
@@ -131,13 +134,14 @@ export async function postOrder(placeOrderDetails: PlaceOrderDetails) {
       );
       console.log("Order: ", res);
 
+      debugger;
       const txHash = await web3.buy(
         {
           id: res.data.dgLiveOrder.storeOrderId,
           price: res.data.dgLiveOrder.totalIce,
           beneficiaryWallet: res.data.dgLiveOrder.customer.wallet,
           userWallet: wallet,
-          datasource: 1,
+          datasource: datasourceId,
         },
         infoModal
       );

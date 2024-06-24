@@ -125,7 +125,6 @@ const joystickCb = ({
   mutableTransform.rotation = Quaternion.fromEulerDegrees(rotX, rotY, rotZ);
   mutableTransform.scale = Vector3.create(sizeX, sizeY, sizeZ);
 };
-
 export const connectToEcommerce = async (datasourceId: number, ecs: any) => {
   if (initialized) return;
   initialized = true;
@@ -163,91 +162,104 @@ const getStoreData = async (datasourceId: number) => {
   }
 };
 
-export const OBStoreUI = (): ReactEcs.JSX.Element => (
-  <UiEntity uiTransform={{ width: "100%" }}>
-    {isArticleOpen && selectedArticle && (
-      <ArticleInfo
-        selectedArticle={selectedArticle}
-        selectedAttributes={selectedAttributes}
-        articleType={articleType}
-        goToShipping={goToShipping}
-        placeOrderDetails={placeOrderDetails}
-        closeModal={closeArticleModal}
-        addToCartIcon={addToCartIcon}
-      />
-    )}
-    {/*BUY NOaddToCartIcon -> SHIPPING INFO*/}
-    {isShippingInfoOpen && placeOrderDetails.lineItems.length > 0 && (
-      <ShippingInfo
-        goToBillingInfo={goToBillingInfo}
-        goBackToArticle={goBackToArticle}
-        placeOrderDetails={placeOrderDetails}
-        userData={userData}
-        closeModal={closeShippingModal}
-      />
-    )}
-    {/* BILLING INFO */}
-    {isBillingInfoOpen && (
-      <BillingInfo
-        goToReviewInfo={goToReviewInfo}
-        goBackToShipping={goBackToShipping}
-        placeOrderDetails={placeOrderDetails}
-        userData={userData}
-        closeModal={closeBillingModal}
-      />
-    )}
-    {/* REVIEW INFO */}
-    {isReviewInfoOpen && (
-      <ReviewInfo
-        goToCartModal={goToCartModal}
-        goBackToBilling={goBackToBilling}
-        placeOrderDetails={placeOrderDetails}
-        closeModal={closeReviewModal}
-      />
-    )}
+export const OBStoreUI = ({
+  datasourceId,
+}: {
+  datasourceId: number;
+}): ReactEcs.JSX.Element => {
+  if (!datasourceId)
+    return (
+      <UiEntity uiTransform={{ width: "100%" }}>
+        Please provide a datasourceId
+      </UiEntity>
+    );
+  return (
+    <UiEntity uiTransform={{ width: "100%" }}>
+      {isArticleOpen && selectedArticle && (
+        <ArticleInfo
+          selectedArticle={selectedArticle}
+          selectedAttributes={selectedAttributes}
+          articleType={articleType}
+          goToShipping={goToShipping}
+          placeOrderDetails={placeOrderDetails}
+          closeModal={closeArticleModal}
+          addToCartIcon={addToCartIcon}
+        />
+      )}
+      {/*BUY NOaddToCartIcon -> SHIPPING INFO*/}
+      {isShippingInfoOpen && placeOrderDetails.lineItems.length > 0 && (
+        <ShippingInfo
+          goToBillingInfo={goToBillingInfo}
+          goBackToArticle={goBackToArticle}
+          placeOrderDetails={placeOrderDetails}
+          userData={userData}
+          closeModal={closeShippingModal}
+        />
+      )}
+      {/* BILLING INFO */}
+      {isBillingInfoOpen && (
+        <BillingInfo
+          goToReviewInfo={goToReviewInfo}
+          goBackToShipping={goBackToShipping}
+          placeOrderDetails={placeOrderDetails}
+          userData={userData}
+          closeModal={closeBillingModal}
+        />
+      )}
+      {/* REVIEW INFO */}
+      {isReviewInfoOpen && (
+        <ReviewInfo
+          goToCartModal={goToCartModal}
+          goBackToBilling={goBackToBilling}
+          placeOrderDetails={placeOrderDetails}
+          closeModal={closeReviewModal}
+        />
+      )}
 
-    {/* CART MODAL */}
-    {isCartOpen && placeOrderDetails.lineItems.length > 0 && (
-      <CartModal
-        goToCheckout={goToCheckout}
-        placeOrderDetails={placeOrderDetails}
-        removeFromCart={removeFromCart}
-        closeModal={closeCartModal}
-      />
-    )}
+      {/* CART MODAL */}
+      {isCartOpen && placeOrderDetails.lineItems.length > 0 && (
+        <CartModal
+          goToCheckout={goToCheckout}
+          placeOrderDetails={placeOrderDetails}
+          removeFromCart={removeFromCart}
+          closeModal={closeCartModal}
+        />
+      )}
 
-    {/* CHECKOUT MODAL */}
-    {isCheckoutOpen && (
-      <CheckoutModal
-        placeOrderDetails={placeOrderDetails}
-        closeModal={closeCheckoutModal}
-      />
-    )}
-    {/* MODALS MESSAGE */}
-    {isInfoModalOpen && (
-      <SuccessModal btnHandler={infoModalHandler} message={infoMessage} />
-    )}
-    {isErrorModalOpen && (
-      <ErrorModal closeModal={closeErrorModal} message={errorMessage} />
-    )}
+      {/* CHECKOUT MODAL */}
+      {isCheckoutOpen && (
+        <CheckoutModal
+          datasourceId={datasourceId}
+          placeOrderDetails={placeOrderDetails}
+          closeModal={closeCheckoutModal}
+        />
+      )}
+      {/* MODALS MESSAGE */}
+      {isInfoModalOpen && (
+        <SuccessModal btnHandler={infoModalHandler} message={infoMessage} />
+      )}
+      {isErrorModalOpen && (
+        <ErrorModal closeModal={closeErrorModal} message={errorMessage} />
+      )}
 
-    {/* CART ICON */}
-    <CartIcon
-      closeModal={closeListOfItemsModal}
-      lineItems={placeOrderDetails.lineItems}
-      totalQuantityProduct={totalQuantityProduct}
-    />
-    {/* CartIcon ->ListOfItems */}
-    {isListOfItemsOpen && placeOrderDetails.lineItems.length > 0 && (
-      <ListOfItems
-        goToShipping={goFromListItemsToShipping}
-        placeOrderDetails={placeOrderDetails}
-        removeFromCart={removeFromCart}
+      {/* CART ICON */}
+      <CartIcon
         closeModal={closeListOfItemsModal}
+        lineItems={placeOrderDetails.lineItems}
+        totalQuantityProduct={totalQuantityProduct}
       />
-    )}
-  </UiEntity>
-);
+      {/* CartIcon ->ListOfItems */}
+      {isListOfItemsOpen && placeOrderDetails.lineItems.length > 0 && (
+        <ListOfItems
+          goToShipping={goFromListItemsToShipping}
+          placeOrderDetails={placeOrderDetails}
+          removeFromCart={removeFromCart}
+          closeModal={closeListOfItemsModal}
+        />
+      )}
+    </UiEntity>
+  );
+};
 //FUNCTIONS GO TO
 // step.1 open article
 export function goToArticleDetail(article: Article) {

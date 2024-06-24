@@ -15,8 +15,8 @@ import RequestManager, {
 } from "eth-connect";
 import config from "../config";
 import {
-  getMarketplaceDomainData,
   getBagDomainData,
+  getEcommerceDomainData,
   getExecuteMetaTransactionData,
 } from "./web3Utils";
 import { BuyPayload } from "../types";
@@ -38,7 +38,7 @@ class Web3 {
   private dgLiveProvider: any;
   private dgLiveFactory: any;
   private dgLiveRequestManager: any;
-  private marketplaceContract: any;
+  private ecommerceContract: any;
 
   constructor() {
     this.initWeb3();
@@ -49,8 +49,8 @@ class Web3 {
       await ContractConfig.forceFetch();
     }
     const bagAbi = ContractConfig.getContractConfigByName("bag").abi;
-    const marketplaceAbi =
-      ContractConfig.getContractConfigByName("marketplace").abi;
+    const ecommerceAbi =
+      ContractConfig.getContractConfigByName("ecommerce").abi;
     this.blastProvider = new HTTPProvider(blastProviderrUrl);
     this.blastRequestManager = new RequestManager(this.blastProvider);
     this.blastFactory = new ContractFactory(this.blastRequestManager, bagAbi);
@@ -59,7 +59,7 @@ class Web3 {
     this.dgLiveRequestManager = new RequestManager(this.dgLiveProvider);
     this.dgLiveFactory = new ContractFactory(
       this.dgLiveRequestManager,
-      marketplaceAbi
+      ecommerceAbi
     );
 
     this.mainnetProvider = createEthereumProvider();
@@ -70,12 +70,13 @@ class Web3 {
     );
     this.createContracts();
   }
+
   private async createContracts() {
     this.blastContract = await this.blastFactory.at(
       ContractConfig.getContractConfigByName("bag").address
     );
-    this.marketplaceContract = await this.dgLiveFactory.at(
-      ContractConfig.getContractConfigByName("marketplace").address
+    this.ecommerceContract = await this.dgLiveFactory.at(
+      ContractConfig.getContractConfigByName("ecommerce").address
     );
     this.mainnetContract = await this.mainnetFactory.at(
       ContractConfig.getContractConfigByName("bag").address
@@ -105,7 +106,7 @@ class Web3 {
     try {
       const balance = await this.blastContract.allowance(
         userWallet,
-        ContractConfig.getContractConfigByName("marketplace").address
+        ContractConfig.getContractConfigByName("ecommerce").address
       );
       return +fromWei(balance, "ether") > 0;
     } catch (error) {
@@ -120,7 +121,7 @@ class Web3 {
     return "no";
     return new Promise(async (resolve, reject) => {
       const approveHex = await this.blastContract.approve.toPayload(
-        ContractConfig.getContractConfigByName("marketplace").address,
+        ContractConfig.getContractConfigByName("ecommerce").address,
         "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
       );
       const [domainData, domainType] = getBagDomainData();
@@ -198,13 +199,14 @@ class Web3 {
     cb: (message: string) => void
   ) => {
     try {
-      const approveHex = await this.marketplaceContract.pay.toPayload(
+      debugger;
+      const approveHex = await this.ecommerceContract.pay.toPayload(
         id,
         price,
         beneficiaryWallet,
         datasource
       );
-      const [domainData, domainType] = getMarketplaceDomainData();
+      const [domainData, domainType] = getEcommerceDomainData();
 
       const metaTransactionType = [
         { name: "nonce", type: "uint256" },
@@ -212,7 +214,7 @@ class Web3 {
         { name: "functionSignature", type: "bytes" },
       ];
 
-      const nonce = await this.marketplaceContract.getNonce(userWallet);
+      const nonce = await this.ecommerceContract.getNonce(userWallet);
       const message = {
         nonce,
         from: userWallet,
@@ -248,7 +250,7 @@ class Web3 {
               transactionData: {
                 from: userWallet,
                 params: [
-                  ContractConfig.getContractConfigByName("marketplace").address,
+                  ContractConfig.getContractConfigByName("ecommerce").address,
                   getExecuteMetaTransactionData(
                     userWallet,
                     result.result,
@@ -307,8 +309,6 @@ class Web3 {
         }),
       });
       const data = await response.json();
-      // console.log('Data', data)
-      // debugger
       return data;
     } catch (error) {
       console.error(error);

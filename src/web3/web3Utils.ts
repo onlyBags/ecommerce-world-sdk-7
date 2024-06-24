@@ -92,12 +92,12 @@ export const getBagDomainData = (): [
   ];
 };
 
-export const getMarketplaceDomainData = (): [
+export const getEcommerceDomainData = (): [
   domainData: DomainData,
   domainType: DomainType[]
 ] => {
   return [
-    ContractConfig.getContractConfigByName("marketplace").domain,
-    ContractConfig.getContractConfigByName("marketplace").domainType,
+    ContractConfig.getContractConfigByName("ecommerce").domain,
+    ContractConfig.getContractConfigByName("ecommerce").domainType,
   ];
 };
