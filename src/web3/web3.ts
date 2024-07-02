@@ -199,7 +199,6 @@ class Web3 {
     cb: (message: string) => void
   ) => {
     try {
-      debugger;
       const approveHex = await this.ecommerceContract.pay.toPayload(
         id,
         price,

@@ -1,7 +1,13 @@
 import { Color4 } from "@dcl/sdk/math";
 import { UiTransformProps } from "@dcl/sdk/react-ecs";
 
-import { errorModal, infoModal, binanceModal, closeAllModals } from "./ui";
+import {
+  errorModal,
+  infoModal,
+  binanceModal,
+  closeAllModals,
+  coinbaseModal,
+} from "./ui";
 import {
   Article,
   LineItem,
@@ -136,15 +142,13 @@ export async function postOrder(
       orderData,
     });
     if (res.status === 200) {
-      debugger;
       if (orderData.paymentMethod === "BINANCE") {
         const binanceData = res.data as BinanceLink;
         closeAllModals();
         binanceModal(binanceData.checkoutUrl, binanceData.qrcodeLink);
       } else if (orderData.paymentMethod === "COINBASE") {
         const coinbaseData = res.data as CoinbasePaymentStatusData;
-        console.log(coinbaseData);
-        debugger;
+        coinbaseModal(coinbaseData.hosted_url);
       } else {
         infoModal(
           "Order placed successfully! \nNow you have 5 mins to pay the order."

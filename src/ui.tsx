@@ -14,6 +14,7 @@ import { ShippingInfo } from "./components/ShippingInfo.ui";
 import { CartModal } from "./components/CartModal.ui";
 import { ReviewInfo } from "./components/ReviewInfo.ui";
 import { BinanceModal } from "./components/BinanceModal.ui";
+import { CoinbaseModal } from "./components/CoinbaseModal.ui";
 import {
   PlaceOrderDetails,
   type Slot,
@@ -52,6 +53,7 @@ let isCartOpen: boolean = false;
 let isCheckoutOpen: boolean = false;
 let isListOfItemsOpen: boolean = false;
 let isBinanceModalOpen: boolean = false;
+let isCoinbaseModalOpen: boolean = false;
 
 //MODALS MESSAGE
 let isInfoModalOpen: boolean = false;
@@ -62,6 +64,8 @@ let errorMessage: string = "";
 let infoMessage: string = "";
 let binanceMessage: string = "";
 let binanceQr: string = "";
+
+let coinbaseLink: string = "";
 //SELECTIONS
 let selectedArticle: Article | null = null;
 let selectedAttributes: SelectedAttributes = {};
@@ -256,6 +260,13 @@ export const OBStoreUI = ({
         />
       )}
 
+      {isCoinbaseModalOpen && (
+        <CoinbaseModal
+          closeModal={closeCoinbaseModal}
+          followLink={coinbaseLink}
+        />
+      )}
+
       {/* CART ICON */}
       <CartIcon
         closeModal={closeListOfItemsModal}
@@ -384,6 +395,10 @@ function closeBinanceModal() {
   isBinanceModalOpen = false;
 }
 
+function closeCoinbaseModal() {
+  isCoinbaseModalOpen = false;
+}
+
 function removeFromCart(productId: number) {
   const prd = productId.toString();
 
@@ -427,7 +442,6 @@ export function errorModal(message?: string) {
 }
 
 export function binanceModal(followLink: string, qr: string) {
-  debugger;
   binanceMessage = followLink;
   binanceQr = qr;
   isInfoModalOpen = false;
@@ -436,6 +450,18 @@ export function binanceModal(followLink: string, qr: string) {
   isBillingInfoOpen = false;
   isBinanceModalOpen = true;
 }
+
+export function coinbaseModal(followLink: string) {
+  coinbaseLink = followLink;
+  isInfoModalOpen = false;
+  isCheckoutOpen = false;
+  isErrorModalOpen = false;
+  isBillingInfoOpen = false;
+  isBinanceModalOpen = false;
+  isCoinbaseModalOpen = true;
+}
+
+closeCoinbaseModal;
 
 function infoModalHandler() {
   if (infoMessageCb) infoMessageCb(isInfoModalOpen);
@@ -447,5 +473,6 @@ export function closeAllModals() {
   isCheckoutOpen = false;
   isErrorModalOpen = false;
   isBillingInfoOpen = false;
-  isBinanceModalOpen = true;
+  isBinanceModalOpen = false;
+  isCoinbaseModalOpen = false;
 }
