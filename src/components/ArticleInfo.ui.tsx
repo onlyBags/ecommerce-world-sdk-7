@@ -25,6 +25,7 @@ interface ArticleInfoProps {
   closeModal: () => void;
   placeOrderDetails: PlaceOrderDetails;
   articleType: string;
+  datasourceId: number;
 }
 
 let itemQuantity = "1";
@@ -117,6 +118,7 @@ export const ArticleInfo = ({
   closeModal,
   placeOrderDetails,
   articleType,
+  datasourceId,
 }: ArticleInfoProps) => {
   const getPrice = () => {
     return +itemQuantity * +selectedArticle.price.toString();
@@ -292,7 +294,11 @@ export const ArticleInfo = ({
                       let selectedValue = attribute?.options[value].value[0];
                       selectedAttributes[attribute.name] = selectedValue;
                       articleType === "variable" &&
-                        getVariationData(selectedArticle, selectedAttributes);
+                        getVariationData(
+                          selectedArticle,
+                          selectedAttributes,
+                          datasourceId
+                        );
                     }}
                     uiTransform={{
                       width: "230px",

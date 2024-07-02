@@ -164,7 +164,7 @@ export async function postOrder(
           },
           infoModal
         );
-        console.log("*************txHash: ", txHash);
+        console.log("*********txHash: ", txHash);
         placeOrderDetails.lineItems = [];
       }
     }
@@ -172,14 +172,15 @@ export async function postOrder(
     closeAllModals();
     errorModal(
       "Error placing order: " + error?.message ||
-        "Something went wrong, try again later."
+        "Something went wrong, try again later ."
     );
   }
 }
 
 export const getVariationData = async (
   selectedArticle: Article,
-  selectedAttributes: SelectedAttributes
+  selectedAttributes: SelectedAttributes,
+  datasourceId: number
 ) => {
   const queryAttributes = selectedArticle?.attributes
     .map((attribute) => {
@@ -200,15 +201,13 @@ export const getVariationData = async (
 
   try {
     let response = await fetch(
-      `${baseUrl}/woocommerce/variation/1/${selectedArticle?.productId}?${queryAttributesAndValues}`,
-      {
-        headers: { "api-key": "apiKey" },
-      }
+      `${baseUrl}/woocommerce/variation/${datasourceId}/${selectedArticle?.productId}?${queryAttributesAndValues}`
     );
     let json = await response.json();
     selectedArticle.price = json.data.price.toString();
+    selectedArticle.images = json.data.images;
     selectedArticle.variationId = json.data.id;
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error, ", error);
   }
 };

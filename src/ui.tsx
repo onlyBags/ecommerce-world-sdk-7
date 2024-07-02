@@ -162,12 +162,12 @@ const getStoreData = async (datasourceId: number) => {
     if (res.status === 200) {
       if (res.data.length) {
         res.data.forEach((slot) => {
-          createItem({ slot, cb: goToArticleDetail, slots });
+          createItem({ slot, cb: goToArticleDetail, slots, datasourceId });
         });
       }
     }
   } catch {
-    console.log("failed to reach URL");
+    console.log("failed to reach URL.");
   }
 };
 
@@ -193,6 +193,7 @@ export const OBStoreUI = ({
           placeOrderDetails={placeOrderDetails}
           closeModal={closeArticleModal}
           addToCartIcon={addToCartIcon}
+          datasourceId={datasourceId}
         />
       )}
       {/*BUY NOaddToCartIcon -> SHIPPING INFO*/}
@@ -287,14 +288,14 @@ export const OBStoreUI = ({
 };
 //FUNCTIONS GO TO
 // step.1 open article
-export function goToArticleDetail(article: Article) {
+export function goToArticleDetail(article: Article, datasourceId: number) {
   article.attributes.forEach((attribute) => {
     selectedAttributes[attribute.name] = attribute.options[0].value[0];
   });
   articleType = article.type;
   selectedArticle = { ...article };
   if (articleType === "variable") {
-    getVariationData(selectedArticle, selectedAttributes);
+    getVariationData(selectedArticle, selectedAttributes, datasourceId);
   }
   isArticleOpen = true;
   isCartOpen = false;

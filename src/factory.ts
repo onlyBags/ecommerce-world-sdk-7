@@ -12,10 +12,12 @@ export const createItem = ({
   slot,
   cb,
   slots,
+  datasourceId,
 }: {
   slot: Slot;
-  cb: (article: Article) => void;
+  cb: (article: Article, datasourceId: number) => void;
   slots: WsSlot[];
+  datasourceId: number;
 }) => {
   if (!!slot && slot.enabled) {
     const article = slot.article;
@@ -54,7 +56,7 @@ export const createItem = ({
           hoverText: `Click to budy ${article.name}`,
         },
       },
-      () => cb(article)
+      () => cb(article, datasourceId)
     );
     const wsSlot = {
       slotId: slot.id,
