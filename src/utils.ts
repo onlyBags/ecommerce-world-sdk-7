@@ -1,13 +1,15 @@
 import { Color4 } from "@dcl/sdk/math";
 import { UiTransformProps } from "@dcl/sdk/react-ecs";
 
-import { errorModal, infoModal } from "./ui";
+import { errorModal, infoModal, binanceModal, closeAllModals } from "./ui";
 import {
   Article,
   LineItem,
   PlaceOrderDetails,
   SelectedAttributes,
   OnlyBagsOrderCreatedRes,
+  BinanceLink,
+  CoinbasePaymentStatusData,
 } from "./types";
 import config from "./config";
 import { http } from "./http";
@@ -79,6 +81,7 @@ export function selectColor(color: string): Color4 {
 
 export const calculateTotal = (lineItems: LineItem[]) => {
   let total = 0;
+  ``;
   lineItems.forEach((x) => {
     total += (x.price || 0) * x.quantity;
   });
@@ -91,10 +94,11 @@ export async function postOrder(
 ) {
   try {
     const wallet = await getUserWallet();
-    if (!wallet) return console.log("Error getting user wallet");
+    if (!wallet) return console.log("Error getting user wallet.");
     const isApproved = await web3.isApproved(wallet);
-    if (!isApproved) {
+    if (!isApproved && placeOrderDetails.paymentMethod === "BAG") {
       const network = await web3.getNetwork();
+      closeAllModals();
       if (network !== "1") {
         return infoModal(
           `Please switch to Ethereum Mainnet, chainId: 1. \nYou are currently on chainId ${network}.`
@@ -119,36 +123,49 @@ export async function postOrder(
       ...placeOrderDetails,
       wallet,
       lineItems: placeOrderDetails.lineItems.map((x) => ({
+        name: x.name,
         productId: x.productId,
         quantity: x.quantity,
       })),
     };
 
-    const res = await http.post<OnlyBagsOrderCreatedRes>("order", {
+    const res = await http.post<
+      OnlyBagsOrderCreatedRes | BinanceLink | CoinbasePaymentStatusData
+    >("order", {
       datasourceId,
       orderData,
     });
     if (res.status === 200) {
-      infoModal(
-        "Order placed successfully! \nNow you have 5 mins to pay the order."
-      );
-      console.log("Order: ", res);
-
       debugger;
-      const txHash = await web3.buy(
-        {
-          id: res.data.dgLiveOrder.storeOrderId,
-          price: res.data.dgLiveOrder.totalIce,
-          beneficiaryWallet: res.data.dgLiveOrder.customer.wallet,
-          userWallet: wallet,
-          datasource: datasourceId,
-        },
-        infoModal
-      );
-      console.log("*************txHash: ", txHash);
-      placeOrderDetails.lineItems = [];
+      if (orderData.paymentMethod === "BINANCE") {
+        const binanceData = res.data as BinanceLink;
+        closeAllModals();
+        binanceModal(binanceData.checkoutUrl, binanceData.qrcodeLink);
+      } else if (orderData.paymentMethod === "COINBASE") {
+        const coinbaseData = res.data as CoinbasePaymentStatusData;
+        console.log(coinbaseData);
+        debugger;
+      } else {
+        infoModal(
+          "Order placed successfully! \nNow you have 5 mins to pay the order."
+        );
+        const resData = res.data as OnlyBagsOrderCreatedRes;
+        const txHash = await web3.buy(
+          {
+            id: resData.dgLiveOrder.storeOrderId,
+            price: resData.dgLiveOrder.totalIce,
+            beneficiaryWallet: resData.dgLiveOrder.customer.wallet,
+            userWallet: wallet,
+            datasource: datasourceId,
+          },
+          infoModal
+        );
+        console.log("*************txHash: ", txHash);
+        placeOrderDetails.lineItems = [];
+      }
     }
   } catch (error: any) {
+    closeAllModals();
     errorModal(
       "Error placing order: " + error?.message ||
         "Something went wrong, try again later."

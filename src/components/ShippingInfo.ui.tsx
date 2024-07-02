@@ -67,6 +67,11 @@ const fields: {
     label: "Country *",
     required: true,
   },
+  {
+    key: "email",
+    label: "Email *",
+    required: true,
+  },
 ];
 
 export const ShippingInfo = ({
@@ -99,10 +104,12 @@ export const ShippingInfo = ({
       "state",
       "postcode",
       "country",
+      "email",
     ];
 
     shippingFields.forEach((field) => {
       placeOrderDetails.shipping[field] = address[field];
+      if (field === "email") placeOrderDetails.email = address[field];
     });
   };
   const handleDropdownChange = (e: number) => {
@@ -128,6 +135,7 @@ export const ShippingInfo = ({
         "state",
         "postcode",
         "country",
+        "email",
       ];
 
       shippingFields.forEach((field) => {

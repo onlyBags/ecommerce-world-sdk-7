@@ -4,7 +4,7 @@ export const images = {
   closeIcon: `${baseUrl}/images/Close.png`,
   cartIcon: `${baseUrl}/images/1.png`,
   success: {
-    successIcon: `${baseUrl}/images/Success.png`,
+    successIcon: `${baseUrl}/images/success/Success.png`,
   },
   payments: {
     binance: `${baseUrl}/images/payments/Binance2.png`,

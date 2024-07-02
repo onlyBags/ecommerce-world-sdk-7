@@ -60,6 +60,11 @@ const fields: {
     label: "Country *",
     required: true,
   },
+  {
+    key: "email",
+    label: "Email *",
+    required: true,
+  },
 ];
 let hasErrors = false;
 let hasUserData = false;
@@ -100,6 +105,7 @@ export const BillingInfo = ({
         state: "",
         postcode: "",
         country: "",
+        email: "",
       };
     }
   };
@@ -114,6 +120,7 @@ export const BillingInfo = ({
       "state",
       "postcode",
       "country",
+      "email",
     ];
 
     billingFields.forEach((field) => {
@@ -144,6 +151,7 @@ export const BillingInfo = ({
         "state",
         "postcode",
         "country",
+        "email",
       ];
 
       shippingFields.forEach((field) => {

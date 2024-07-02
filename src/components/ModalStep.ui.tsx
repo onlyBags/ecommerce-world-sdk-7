@@ -1,43 +1,44 @@
-import ReactEcs, { UiEntity } from '@dcl/sdk/react-ecs'
+import ReactEcs, { UiEntity } from "@dcl/sdk/react-ecs";
+import { images } from "../assets/images";
 
-const baseImgPath = 'images/contact'
+const baseImgPath = "images/contact";
 const ModalStep = ({ step }: { step: number }) => {
   const getStepImage = () => {
     switch (step) {
       case 1:
-        return `${baseImgPath}/First-Step.png`
+        return images.steps.firstStep;
       case 2:
-        return `${baseImgPath}/Second-Step.png`
+        return images.steps.secondStep;
       case 3:
-        return `${baseImgPath}/Third-Step.png`
+        return images.steps.finalStep;
       default:
-        return `${baseImgPath}/First-Step.png`
-        break
+        return images.steps.firstStep;
+        break;
     }
-  }
+  };
 
   return (
     <UiEntity
       uiTransform={{
-        justifyContent: 'center',
-        margin: { top: 35 }
+        justifyContent: "center",
+        margin: { top: 35 },
       }}
     >
       <UiEntity
         uiTransform={{
           width: 425,
           height: 53,
-          justifyContent: 'center'
+          justifyContent: "center",
         }}
         uiBackground={{
-          textureMode: 'center',
+          textureMode: "center",
           texture: {
-            src: getStepImage()
-          }
+            src: getStepImage(),
+          },
         }}
       />
     </UiEntity>
-  )
-}
+  );
+};
 
-export default ModalStep
+export default ModalStep;

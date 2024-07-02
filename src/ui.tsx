@@ -13,6 +13,7 @@ import { BillingInfo } from "./components/BillingInfo.ui";
 import { ShippingInfo } from "./components/ShippingInfo.ui";
 import { CartModal } from "./components/CartModal.ui";
 import { ReviewInfo } from "./components/ReviewInfo.ui";
+import { BinanceModal } from "./components/BinanceModal.ui";
 import {
   PlaceOrderDetails,
   type Slot,
@@ -43,22 +44,24 @@ let initialized: boolean = false;
 let components: EngineComponents;
 
 //MODALS
-var isArticleOpen: boolean = false;
-var isShippingInfoOpen: boolean = false;
-var isBillingInfoOpen: boolean = false;
-var isReviewInfoOpen: boolean = false;
-var isCartOpen: boolean = false;
-var isCheckoutOpen: boolean = false;
-var isListOfItemsOpen: boolean = false;
+let isArticleOpen: boolean = false;
+let isShippingInfoOpen: boolean = false;
+let isBillingInfoOpen: boolean = false;
+let isReviewInfoOpen: boolean = false;
+let isCartOpen: boolean = false;
+let isCheckoutOpen: boolean = false;
+let isListOfItemsOpen: boolean = false;
+let isBinanceModalOpen: boolean = false;
 
 //MODALS MESSAGE
 let isInfoModalOpen: boolean = false;
-var isErrorModalOpen: boolean = false;
+let isErrorModalOpen: boolean = false;
 
 //MESSAGE
 let errorMessage: string = "";
 let infoMessage: string = "";
-
+let binanceMessage: string = "";
+let binanceQr: string = "";
 //SELECTIONS
 let selectedArticle: Article | null = null;
 let selectedAttributes: SelectedAttributes = {};
@@ -78,6 +81,7 @@ let placeOrderDetails: PlaceOrderDetails = {
     state: "",
     postcode: "",
     country: "",
+    email: "",
   },
   billing: {
     firstName: "",
@@ -88,12 +92,13 @@ let placeOrderDetails: PlaceOrderDetails = {
     state: "",
     postcode: "",
     country: "",
+    email: "",
   },
   lineItems: [],
   shippingLines: [],
   wallet: "",
-  paymentMethod: "",
-  paymentMethodTitle: "",
+  paymentMethod: "BAG",
+  email: "",
   saveBilling: false,
   saveShipping: false,
 };
@@ -238,8 +243,17 @@ export const OBStoreUI = ({
       {isInfoModalOpen && (
         <SuccessModal btnHandler={infoModalHandler} message={infoMessage} />
       )}
+
       {isErrorModalOpen && (
         <ErrorModal closeModal={closeErrorModal} message={errorMessage} />
+      )}
+
+      {isBinanceModalOpen && (
+        <BinanceModal
+          closeModal={closeBinanceModal}
+          followLink={binanceMessage}
+          qr={binanceQr}
+        />
       )}
 
       {/* CART ICON */}
@@ -366,6 +380,10 @@ function closeErrorModal() {
   isErrorModalOpen = false;
 }
 
+function closeBinanceModal() {
+  isBinanceModalOpen = false;
+}
+
 function removeFromCart(productId: number) {
   const prd = productId.toString();
 
@@ -408,7 +426,26 @@ export function errorModal(message?: string) {
   isErrorModalOpen = true;
 }
 
+export function binanceModal(followLink: string, qr: string) {
+  debugger;
+  binanceMessage = followLink;
+  binanceQr = qr;
+  isInfoModalOpen = false;
+  isCheckoutOpen = false;
+  isErrorModalOpen = false;
+  isBillingInfoOpen = false;
+  isBinanceModalOpen = true;
+}
+
 function infoModalHandler() {
   if (infoMessageCb) infoMessageCb(isInfoModalOpen);
   else isInfoModalOpen = false;
+}
+
+export function closeAllModals() {
+  isInfoModalOpen = false;
+  isCheckoutOpen = false;
+  isErrorModalOpen = false;
+  isBillingInfoOpen = false;
+  isBinanceModalOpen = true;
 }

@@ -4,7 +4,7 @@ import { MODAL_SIZE, postOrder } from "../utils";
 import { PlaceOrderDetails } from "../types";
 import { executeTask } from "@dcl/sdk/ecs";
 import { images } from "../assets/images";
-
+import { getUserData } from "~system/UserIdentity";
 interface CheckoutModalProps {
   datasourceId: number;
   placeOrderDetails: PlaceOrderDetails;
@@ -15,11 +15,8 @@ function selectOption(index: number) {
   console.log(index);
 }
 
-enum PaymentMethod {
-  Bag = "Bag",
-  Coinbase = "Coinbase",
-  Binance = "Binance",
-}
+type PaymentMethod = "BAG" | "BINANCE" | "COINBASE";
+
 let selectedPayment: PaymentMethod;
 let isPaying: boolean = false;
 let hasSelectedPayment: boolean = true;
@@ -37,8 +34,15 @@ export const CheckoutModal = ({
     }
     placeOrderDetails.paymentMethod = paymentMethod;
     try {
+      const userData = await getUserData({});
       isPaying = true;
       hasSelectedPayment = true;
+      placeOrderDetails.shipping.firstName =
+        userData.data?.displayName || "guest";
+      placeOrderDetails.shipping.lastName = "onlybags";
+      placeOrderDetails.billing.firstName =
+        userData.data?.displayName || "guest";
+      placeOrderDetails.billing.lastName = "onlybags";
       const res = await postOrder(datasourceId, placeOrderDetails);
       console.log(res);
     } catch (error) {
@@ -146,7 +150,7 @@ export const CheckoutModal = ({
               <UiEntity
                 uiBackground={{
                   color:
-                    selectedPayment === PaymentMethod.Bag
+                    selectedPayment === "BAG"
                       ? Color4.Black()
                       : Color4.fromHexString("#E5E5E5"),
                 }}
@@ -162,13 +166,13 @@ export const CheckoutModal = ({
                       src: images.payments.bag,
                     },
                   }}
-                  onMouseDown={() => (selectedPayment = PaymentMethod.Bag)}
+                  onMouseDown={() => (selectedPayment = "BAG")}
                 />
               </UiEntity>
               <UiEntity
                 uiBackground={{
                   color:
-                    selectedPayment === PaymentMethod.Coinbase
+                    selectedPayment === "COINBASE"
                       ? Color4.Black()
                       : Color4.fromHexString("#E5E5E5"),
                 }}
@@ -184,13 +188,13 @@ export const CheckoutModal = ({
                       src: images.payments.coinbase,
                     },
                   }}
-                  onMouseDown={() => (selectedPayment = PaymentMethod.Coinbase)}
+                  onMouseDown={() => (selectedPayment = "COINBASE")}
                 />
               </UiEntity>
               <UiEntity
                 uiBackground={{
                   color:
-                    selectedPayment === PaymentMethod.Binance
+                    selectedPayment === "BINANCE"
                       ? Color4.Black()
                       : Color4.fromHexString("#E5E5E5"),
                 }}
@@ -206,7 +210,7 @@ export const CheckoutModal = ({
                       src: images.payments.binance,
                     },
                   }}
-                  onMouseDown={() => (selectedPayment = PaymentMethod.Binance)}
+                  onMouseDown={() => (selectedPayment = "BINANCE")}
                 />
               </UiEntity>
             </UiEntity>

@@ -146,7 +146,8 @@ export interface LineItem {
   quantity: number;
   price?: number;
   variationId?: number;
-  name?: string;
+  name: string;
+  description?: string;
   image?: string;
 }
 
@@ -159,16 +160,16 @@ export interface Shipping {
   state: string;
   postcode: string;
   country: string;
+  email: string;
 }
 
 export interface Billing extends Shipping {
-  email?: string;
   phone?: string;
 }
 
 export interface PlaceOrderDetails {
-  paymentMethod: string;
-  paymentMethodTitle: string;
+  paymentMethod: "BAG" | "BINANCE" | "COINBASE";
+  email: string;
   wallet: string;
   shippingId?: number;
   billingId?: number;
@@ -300,7 +301,7 @@ export interface Address {
     createdAt: string;
     updatedAt: string;
   };
-  email: string | null;
+  email: string;
   firstName: string;
   id: number;
   lastName: string;
@@ -352,4 +353,162 @@ interface ContractEventInput {
   internalType: string;
   name: string;
   type: string;
+}
+
+export interface BinanceLink {
+  prepayId: string;
+  terminalType: string;
+  expireTime: number;
+  qrcodeLink: string;
+  qrContent: string;
+  checkoutUrl: string;
+  deeplink: string;
+  universalUrl: string;
+  currency: string;
+}
+
+interface Addresses {
+  polygon: string;
+  pusdc: string;
+  pweth: string;
+  ethereum: string;
+  usdc: string;
+  dai: string;
+  apecoin: string;
+  shibainu: string;
+  tether: string;
+  bitcoincash: string;
+  dogecoin: string;
+  litecoin: string;
+  bitcoin: string;
+}
+
+interface LocalExchangeRates {
+  "APE-USD": string;
+  "BCH-USD": string;
+  "BTC-USD": string;
+  "DAI-USD": string;
+  "ETH-USD": string;
+  "LTC-USD": string;
+  "DOGE-USD": string;
+  "SHIB-USD": string;
+  "USDC-USD": string;
+  "USDT-USD": string;
+  "PUSDC-USD": string;
+  "PWETH-USD": string;
+  "PMATIC-USD": string;
+}
+interface ExchangeRates extends LocalExchangeRates {}
+
+interface Local {
+  amount: string;
+  currency: string;
+}
+interface Polygon {
+  amount: string;
+  currency: string;
+}
+interface Pusdc {
+  amount: string;
+  currency: string;
+}
+interface Pweth {
+  amount: string;
+  currency: string;
+}
+interface Ethereum {
+  amount: string;
+  currency: string;
+}
+interface Settelment {
+  amount: string;
+  currency: string;
+}
+interface Usdc {
+  amount: string;
+  currency: string;
+}
+interface Dai {
+  amount: string;
+  currency: string;
+}
+interface Apecoin {
+  amount: string;
+  currency: string;
+}
+interface Shibainu {
+  amount: string;
+  currency: string;
+}
+interface Tether {
+  amount: string;
+  currency: string;
+}
+interface Bitcoincash {
+  amount: string;
+  currency: string;
+}
+interface Dogecoin {
+  amount: string;
+  currency: string;
+}
+interface Litecoin {
+  amount: string;
+  currency: string;
+}
+interface Bitcoin {
+  amount: string;
+  currency: string;
+}
+interface Pricing {
+  local: Local;
+  polygon: Polygon;
+  pusdc: Pusdc;
+  pweth: Pweth;
+  ethereum: Ethereum;
+  usdc: Usdc;
+  dai: Dai;
+  apecoin: Apecoin;
+  shibainu: Shibainu;
+  tether: Tether;
+  bitcoincash: Bitcoincash;
+  dogecoin: Dogecoin;
+  litecoin: Litecoin;
+  bitcoin: Bitcoin;
+  settlement: Settelment;
+}
+
+interface Timeline {
+  status: string;
+  time: Date;
+}
+
+export interface CoinbasePaymentStatusData {
+  addresses: Addresses;
+  brand_color: string;
+  brand_logo_url: string;
+  code: string;
+  coinbase_managed_merchant: boolean;
+  created_at: Date;
+  exchange_rates: ExchangeRates;
+  expires_at: Date;
+  fee_rate: number;
+  fees_settled: boolean;
+  hosted_url: string;
+  id: string;
+  local_exchange_rates: LocalExchangeRates;
+  logo_url: string;
+  metadata: Record<string, string>;
+  name: string;
+  offchain_eligible: boolean;
+  organization_name: string;
+  payments: any[];
+  pricing: Pricing;
+  pricing_type: string;
+  pwcb_only: boolean;
+  redirect_url: string;
+  resource: string;
+  support_email: string;
+  timeline: Timeline[];
+  utxo: boolean;
 }
